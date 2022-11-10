@@ -5,7 +5,9 @@ plugins {
 
 android {
     compileSdk 32
-
+    dataBinding {
+        android.buildFeatures.dataBinding = true
+    }
     defaultConfig {
         applicationId "com.example.tabata"
         minSdk 21
