@@ -1,29 +1,39 @@
-package com.example.tabata
+package com.example.tabata.View
 
 
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.withTransaction
+import com.example.tabata.*
+import com.example.tabata.Db.MyDb
+import com.example.tabata.Models.PhaseModel
+import com.example.tabata.Models.PhaseType
+import com.example.tabata.Models.SequenceModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class MainActivity : AppCompatActivity(), SequenceRecyclerAdapter.ClickListener {
 
     private lateinit var blogAdapter: SequenceRecyclerAdapter
-    private val myDbManager = MyDbManager(this)
+    //private val myDbManager = MyDbManager(this)
     private var editMenu :Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-
-        initRecyclerView(this)
         addDataSet()
+        initRecyclerView(this)
     }
 
     override fun onResume() {
@@ -40,7 +50,6 @@ class MainActivity : AppCompatActivity(), SequenceRecyclerAdapter.ClickListener 
             menuInflater.inflate(R.menu.mymenu2, menu)
             editMenu = false
         }
-
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -62,21 +71,52 @@ class MainActivity : AppCompatActivity(), SequenceRecyclerAdapter.ClickListener 
             startActivity(intentToConverterScreen)
             Toast.makeText(this@MainActivity, "Yoo clicked pencil", Toast.LENGTH_LONG).show()
         }
-            // do something here
-
         return super.onOptionsItemSelected(item)
     }
 
+
+
     private fun addDataSet(){
-        val data : ArrayList<SequenceModel> = myDbManager.readDbData()
-        data.addAll(DataSource.createDataSet())
-        blogAdapter.submitList(data)
+        val db = MyDb.getDb(this)
+        lifecycleScope.launch(Dispatchers.IO) {
+            val seqId = 1
+            val seq = SequenceModel( 1,
+                "FirstWorkout",
+                R.id.radioButton3,
+                1,
+                true)
+
+            val phase1 = PhaseModel(
+                PhaseId = 1,
+                sequenceId = 1,
+                phaseType = PhaseType.WORK,
+                title = "workPhase",
+                duration = 1,
+                order = 1
+            )
+            val phase2 = PhaseModel(
+                PhaseId = 2,
+                sequenceId = 1,
+                phaseType = PhaseType.BREAK,
+                title = "breakPhase",
+                duration = 1,
+                order = 2
+            )
+
+            db.withTransaction {
+                db.getDao().insertSequence(seq)
+                db.getDao().insertPhase(phase1, phase2)
+                val result = db.getDao().getAllSequences()
+                blogAdapter.submitList(result)
+                Log.d("recyclerviewdb", "$result")
+            }
+        }
     }
 
 
 
 
-    private fun initRecyclerView(listener:SequenceRecyclerAdapter.ClickListener){
+    private fun initRecyclerView(listener: SequenceRecyclerAdapter.ClickListener){
         val recyclerView : RecyclerView= findViewById(R.id.recycler_view)
         recyclerView.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
@@ -89,7 +129,7 @@ class MainActivity : AppCompatActivity(), SequenceRecyclerAdapter.ClickListener 
 
     override fun onDestroy() {
         super.onDestroy()
-        myDbManager.closeDb()
+        //myDbManager.closeDb()
 
     }
 

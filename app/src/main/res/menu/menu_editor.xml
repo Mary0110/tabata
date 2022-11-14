@@ -6,4 +6,17 @@
         android:title=""
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_save" />
+    <item
+        android:id="@+id/add_button"
+        android:icon="@drawable/ic_add"
+        android:title=""
+        app:showAsAction="ifRoom">
+        <menu>
+            <item android:id="@+id/work_submenu"
+                android:title="work" />
+            <item android:id="@+id/break_submenu"
+                android:title="break" />
+        </menu>
+    </item>
+
 </menu>

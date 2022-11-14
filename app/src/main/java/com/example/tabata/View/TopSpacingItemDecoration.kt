@@ -1,4 +1,4 @@
-package com.example.tabata
+package com.example.tabata.View
 
 import android.graphics.Rect
 import android.view.View

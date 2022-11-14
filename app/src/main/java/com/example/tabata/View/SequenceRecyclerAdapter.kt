@@ -1,14 +1,21 @@
-package com.example.tabata
+package com.example.tabata.View
 
 
 
+import android.annotation.SuppressLint
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.cardview.widget.CardView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.example.tabata.Models.SequenceModel
+import com.example.tabata.R
+import java.security.AccessController.getContext
 
 
 class SequenceRecyclerAdapter(val listener: ClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>()
@@ -25,9 +32,12 @@ class SequenceRecyclerAdapter(val listener: ClickListener) : RecyclerView.Adapte
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        var seqItem = items[position]
+
         when(holder) {
             is SequenceViewHolder -> {
                 holder.bind(items.get(position), listener)
+
             }
         }
 
@@ -48,22 +58,21 @@ class SequenceRecyclerAdapter(val listener: ClickListener) : RecyclerView.Adapte
     ): RecyclerView.ViewHolder(itemView){
 
         val title: TextView = itemView.findViewById(R.id.title_text)
-        val workout_time: TextView = itemView.findViewById(R.id.workout_time)
-        val break_time: TextView = itemView.findViewById(R.id.break_time)
-        val repetitions: TextView = itemView.findViewById(R.id.repetitions_num)
-        val warmup: TextView = itemView.findViewById(R.id.warmup_time)
-        val sets: TextView = itemView.findViewById(R.id.sets_num)
-        val long_break: TextView = itemView.findViewById(R.id.long_break_time)
-
+       // val card : ConstraintLayout = itemView.findViewById(R.id.card)
 
         fun bind(sequenceModel: SequenceModel, listener: ClickListener){
             title.text = sequenceModel.title
-            workout_time.text = sequenceModel.workout_time.toString()
-            break_time.text = sequenceModel.break_time.toString()
-            repetitions.text = sequenceModel.repetitions_number.toString()
-            warmup.text = sequenceModel.warm_up_time.toString()
-            sets.text = sequenceModel.sets_number.toString()
-            long_break.text = sequenceModel.long_break_time.toString()
+           // card.setBackgroundColor(Color.parseColor("#FFEB3B"))
+
+            //var backgroundColor = Color.parseColor("#FFEB3B")
+//
+//            if(sequenceModel.color == R.id.radioButton3)
+//                backgroundColor = Color.parseColor("#4CAF50")
+//            else if(sequenceModel.color ==  R.id.radioButton4)
+//                backgroundColor = Color.parseColor("#FFEB3B")
+//            else if(sequenceModel.color ==  R.id.radioButton5)
+//                backgroundColor = Color.parseColor("#F44336")
+            Log.d("ifstat", "inside")
 
             itemView.setOnClickListener{
                 listener.onClick(sequenceModel)
