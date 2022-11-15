@@ -149,7 +149,7 @@ class MainActivity : AppCompatActivity(), SequenceRecyclerAdapter.ClickListener 
 
     override fun onLongClick(sequence: SequenceModel) {
         Toast.makeText(this@MainActivity, "Yoo longclicked sequence", Toast.LENGTH_LONG).show()
-        pressedSequenceId = sequence.SequenceId!!
+        pressedSequenceId = sequence.sequenceId!!
         editMenu = true
         invalidateOptionsMenu()
     }

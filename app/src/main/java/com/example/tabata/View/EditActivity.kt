@@ -11,8 +11,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.withTransaction
 import com.example.tabata.Db.MyDb
 import com.example.tabata.Models.PhaseModel
+import com.example.tabata.Models.SequenceModel
 import com.example.tabata.R
 import com.example.tabata.viewModel.EditViewModel
 import com.example.tabata.databinding.ActivityEditBinding
@@ -91,12 +93,21 @@ class EditActivity : AppCompatActivity() {
             //phaseAdapter.submitList(result)
         }
     }
-
+fun setValues(seq:SequenceModel){
+    editViewModel.setTitle(seq.title)
+    editViewModel.setColor(seq.color)
+    editViewModel.setSets(seq.sets_number)
+}
     private fun readFromDb(seqId: Int){
     val db = MyDb.getDb(this)
         lifecycleScope.launch(Dispatchers.IO) {
+            db.withTransaction {
                 val phases = db.getDao().getPhases(seqId)
                 phaseAdapter.submitList(phases)
+                val seq = db.getDao().getSequence(seqId)
+                setValues(seq)
+            }
+
             }
         }
 

@@ -20,6 +20,9 @@ interface Dao {
     @Query("SELECT * FROM phases WHERE :seqId = sequenceId ORDER BY `order`  ")
     fun getPhases(seqId:Int): List<PhaseModel>
 
+    @Query("SELECT * FROM sequences WHERE :seqId = sequence_id ")
+    fun getSequence(seqId:Int): SequenceModel
+
     @Update
     fun updatePhase(phase: PhaseModel)
 

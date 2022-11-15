@@ -28,15 +28,15 @@ class EditViewModel: ViewModel() {
     }
 
     fun setTitle(_title: String){
-        title.value = _title
+        title.postValue( _title)
     }
 
     fun setSets(_title: Int){
-        sets.value = _title
+        sets.postValue(_title)
     }
 
     fun setColor(_title: Int){
-        color.value = _title
+        color.postValue( _title)
     }
 
     fun OnMinusSets(){
