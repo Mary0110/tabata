@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity(), SequenceRecyclerAdapter.ClickListener 
     //private val myDbManager = MyDbManager(this)
     private var editMenu :Boolean = false
 
+    private var pressedSequenceId: Int = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -61,14 +62,16 @@ class MainActivity : AppCompatActivity(), SequenceRecyclerAdapter.ClickListener 
         val id = item.itemId
 
         if (id == R.id.mybutton) {
-                val intentToConverterScreen = Intent(this, EditActivity::class.java)
-                startActivity(intentToConverterScreen)
+                val intentToEditActivity = Intent(this, EditActivity::class.java)
+
+            startActivity(intentToEditActivity)
                 Toast.makeText(this@MainActivity, "Yoo clicked plus", Toast.LENGTH_LONG).show()
         }
 
         if (id == R.id.pencil) {
-            val intentToConverterScreen = Intent(this, EditActivity::class.java)
-            startActivity(intentToConverterScreen)
+            val intentToEditActivity = Intent(this, EditActivity::class.java)
+            intentToEditActivity.putExtra("sequence_id", pressedSequenceId)
+            startActivity(intentToEditActivity)
             Toast.makeText(this@MainActivity, "Yoo clicked pencil", Toast.LENGTH_LONG).show()
         }
         return super.onOptionsItemSelected(item)
@@ -92,7 +95,8 @@ class MainActivity : AppCompatActivity(), SequenceRecyclerAdapter.ClickListener 
                 phaseType = PhaseType.WORK,
                 title = "workPhase",
                 duration = 1,
-                order = 1
+                order = 1,
+
             )
             val phase2 = PhaseModel(
                 PhaseId = 2,
@@ -100,7 +104,8 @@ class MainActivity : AppCompatActivity(), SequenceRecyclerAdapter.ClickListener 
                 phaseType = PhaseType.BREAK,
                 title = "breakPhase",
                 duration = 1,
-                order = 2
+                order = 2,
+
             )
 
             db.withTransaction {
@@ -136,11 +141,15 @@ class MainActivity : AppCompatActivity(), SequenceRecyclerAdapter.ClickListener 
     override fun onClick(sequence: SequenceModel) {
         Toast.makeText(this@MainActivity, "Yoo clicked sequence", Toast.LENGTH_LONG).show()
         val intentToTimerActivity = Intent(this, TimerActivity::class.java)
+
+
+
         startActivity(intentToTimerActivity)
     }
 
     override fun onLongClick(sequence: SequenceModel) {
         Toast.makeText(this@MainActivity, "Yoo longclicked sequence", Toast.LENGTH_LONG).show()
+        pressedSequenceId = sequence.SequenceId!!
         editMenu = true
         invalidateOptionsMenu()
     }

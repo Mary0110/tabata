@@ -8,14 +8,23 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.tabata.Db.MyDb
+import com.example.tabata.Models.PhaseModel
 import com.example.tabata.R
 import com.example.tabata.viewModel.EditViewModel
 import com.example.tabata.databinding.ActivityEditBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class EditActivity : AppCompatActivity() {
 
     //private val myDbManager = MyDbManager(this)
+    private lateinit var phaseAdapter: PhaseRecyclerAdapter
+
     lateinit var editViewModel: EditViewModel
    // private lateinit var homeBinding: ActivityHomeBinding
 
@@ -32,7 +41,10 @@ class EditActivity : AppCompatActivity() {
 
         // Pass the ViewModel into the binding
         editBinding.viewmodel = editViewModel
-
+        val current_sequence = intent.getIntExtra("sequence_id", 0)
+        if(current_sequence != 0)
+            readFromDb(current_sequence)
+        initRecyclerView()
 
 
 
@@ -68,31 +80,28 @@ class EditActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-   /* private fun saveSequence() {
-        editViewModel = ViewModelProvider(this)[EditViewModel::class.java]
-        var title =  editViewModel.title.value.toString()
-        var color =  editViewModel.color.value
-        var warm_up_time =  editViewModel.warmup_time.value
-        var sets_number =  editViewModel.sets.value
-        var workout_time =  editViewModel.workout_time.value
-        var break_time =  editViewModel.break_time.value
-        var repetitions_number =  editViewModel.repetitions_num.value
-        var long_break_time =  editViewModel.long_break_time.value
-        var sequence  = SequenceModel(
-            null,
-            title,
-            color!!,
-            warm_up_time!!,
-            sets_number!!,
-            workout_time!!,
-            break_time!!,
-            repetitions_number!!,
-            long_break_time!!)
+    private fun initRecyclerView(){
+        val recyclerView : RecyclerView = findViewById(R.id.phase_recyclerView)
+        recyclerView.apply {
+            layoutManager = LinearLayoutManager(this@EditActivity)
+            val topSpacingDecorator = TopSpacingItemDecoration(90)
+            addItemDecoration(topSpacingDecorator)
+            phaseAdapter = PhaseRecyclerAdapter()
+            adapter = phaseAdapter
+            //phaseAdapter.submitList(result)
+        }
+    }
+
+    private fun readFromDb(seqId: Int){
+    val db = MyDb.getDb(this)
+        lifecycleScope.launch(Dispatchers.IO) {
+                val phases = db.getDao().getPhases(seqId)
+                phaseAdapter.submitList(phases)
+            }
+        }
+
+    }
 
 
 
-       // myDbManager.insertIntoDb()
-    }*/
 
-
-}

@@ -58,20 +58,21 @@ class SequenceRecyclerAdapter(val listener: ClickListener) : RecyclerView.Adapte
     ): RecyclerView.ViewHolder(itemView){
 
         val title: TextView = itemView.findViewById(R.id.title_text)
-       // val card : ConstraintLayout = itemView.findViewById(R.id.card)
+        val card : ConstraintLayout = itemView.findViewById(R.id.card)
 
         fun bind(sequenceModel: SequenceModel, listener: ClickListener){
             title.text = sequenceModel.title
-           // card.setBackgroundColor(Color.parseColor("#FFEB3B"))
 
-            //var backgroundColor = Color.parseColor("#FFEB3B")
+
+            var backgroundColor = Color.parseColor("#FFEB3B")
 //
-//            if(sequenceModel.color == R.id.radioButton3)
-//                backgroundColor = Color.parseColor("#4CAF50")
-//            else if(sequenceModel.color ==  R.id.radioButton4)
-//                backgroundColor = Color.parseColor("#FFEB3B")
-//            else if(sequenceModel.color ==  R.id.radioButton5)
-//                backgroundColor = Color.parseColor("#F44336")
+            if(sequenceModel.color == R.id.radioButton3)
+                backgroundColor = Color.parseColor("#4CAF50")
+            else if(sequenceModel.color ==  R.id.radioButton4)
+                backgroundColor = Color.parseColor("#FFEB3B")
+            else if(sequenceModel.color ==  R.id.radioButton5)
+                backgroundColor = Color.parseColor("#F44336")
+            card.setBackgroundColor((backgroundColor))
             Log.d("ifstat", "inside")
 
             itemView.setOnClickListener{

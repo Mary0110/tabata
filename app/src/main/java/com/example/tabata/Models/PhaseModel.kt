@@ -12,5 +12,4 @@ data class PhaseModel(
     @NonNull var phaseType: PhaseType,
     @NonNull val title: String,
     @NonNull val duration: Int,
-    @NonNull val order: Int
-    )
+    @NonNull val order: Int)
