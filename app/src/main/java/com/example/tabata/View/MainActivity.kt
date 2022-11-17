@@ -90,7 +90,7 @@ class MainActivity : AppCompatActivity(), SequenceRecyclerAdapter.ClickListener 
                 true)
 
             val phase1 = PhaseModel(
-                PhaseId = 1,
+                phaseId = 1,
                 sequenceId = 1,
                 phaseType = PhaseType.WORK,
                 title = "workPhase",
@@ -99,7 +99,7 @@ class MainActivity : AppCompatActivity(), SequenceRecyclerAdapter.ClickListener 
 
             )
             val phase2 = PhaseModel(
-                PhaseId = 2,
+                phaseId = 2,
                 sequenceId = 1,
                 phaseType = PhaseType.BREAK,
                 title = "breakPhase",

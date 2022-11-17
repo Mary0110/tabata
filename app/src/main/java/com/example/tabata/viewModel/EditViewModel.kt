@@ -1,25 +1,40 @@
 package com.example.tabata.viewModel
 
+import android.app.Application
 import android.util.Log
 import android.widget.RadioGroup
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
+import androidx.room.withTransaction
+import com.example.tabata.Db.MyDb
+import com.example.tabata.Db.Repo
 import com.example.tabata.Models.PhaseModel
+import com.example.tabata.Models.SequenceWithPhases
 import com.example.tabata.R
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
-class EditViewModel: ViewModel() {
-    var phasesList = MutableLiveData<List<PhaseModel>>()
+class EditViewModel(application: Application, mParam: Int): AndroidViewModel(application) {
+    var phasesList = MutableLiveData<MutableList<PhaseModel>>()
     var title = MutableLiveData<String>()
     var sets = MutableLiveData<Int>()
     var color = MutableLiveData<Int>()
-
+    lateinit var curr: SequenceWithPhases
+    lateinit var repo : Repo
+   // var data: LiveData<List<SequenceWithPhases>>
     init{
-        title.value="default title"//def value
+        var db = MyDb.getDb(application)
+        repo = Repo(db)
+       viewModelScope.launch {
+           curr = repo.getAll().find { it.sequence.sequenceId == mParam }!!
+           title.value = curr.sequence.title
+           Log.d("my", "${title.value}")
+           sets.value = curr.sequence.sets_number
+           color.value = curr.sequence.color
+           phasesList.value = curr.phases.toMutableList()
+       }
 
-        sets.value=0//def value
 
-        color.value=(R.id.radioButton4)//def value
 
     }
 
@@ -52,4 +67,15 @@ class EditViewModel: ViewModel() {
         title.postValue(s.toString())
         Log.w("tag", "onTextChanged $s")
     }
+//    private fun readFromDb(seqId: Int) {
+//        val db = MyDb.getDb(this)
+//        viewModelScope.launch(Dispatchers.IO) {
+//            db.withTransaction {
+//                val phases = db.getDao().getPhases(seqId)
+//                phaseAdapter.submitList(phases)
+//                val seq = db.getDao().getSequence(seqId)
+//                setValues(seq)
+//            }
+//        }
+//    }
 }

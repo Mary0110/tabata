@@ -1,5 +1,6 @@
 package com.example.tabata.Db
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import androidx.room.Dao
 import com.example.tabata.Models.PhaseModel
@@ -31,7 +32,11 @@ interface Dao {
 
     @Transaction
     @Query("SELECT * FROM sequences")
-    fun getAllSequencesWithPhases(): List<SequenceWithPhases>
+    fun getAllSequencesWithPhases():List<SequenceWithPhases>
+
+    @Transaction
+    @Query("SELECT * FROM sequences")
+    fun getAllSequenceWithPhases():SequenceWithPhases
 
     @Query("DELETE FROM sequences")
     fun deleteAllSequences()
@@ -41,6 +46,7 @@ interface Dao {
 
     @Query("SELECT MAX(sequence_id) FROM sequences")
     fun getMaxSequenceId() : Int
+
 
     @Query("SELECT MAX(phase_id) FROM phases")
     fun getMaxPhaseId() : Int

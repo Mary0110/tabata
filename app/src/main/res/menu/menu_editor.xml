@@ -16,6 +16,10 @@
                 android:title="work" />
             <item android:id="@+id/break_submenu"
                 android:title="break" />
+            <item android:id="@+id/long_break_submenu"
+                android:title="long break" />
+            <item android:id="@+id/warm_up_submenu"
+                android:title="warm-up" />
         </menu>
     </item>
 
