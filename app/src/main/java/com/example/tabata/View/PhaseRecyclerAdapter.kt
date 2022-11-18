@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -30,6 +31,30 @@ class PhaseRecyclerAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         when(holder) {
             is PhaseViewHolder -> {
                 holder.bind(items.get(position))
+                holder.minusButton.setOnClickListener{
+                    val dur_text = holder.duration.text.toString().toInt()
+                    if (dur_text > 0)
+                        holder.duration.text = (dur_text -1).toString()
+                }
+                holder.plusButton.setOnClickListener{
+                    val dur_text = holder.duration.text.toString().toInt()
+
+                    holder.duration.text = (dur_text + 1).toString()
+                }
+
+                holder.minusButton.setOnLongClickListener{
+                    val dur_text = holder.duration.text.toString().toInt()
+                    if (dur_text > 5)
+                        holder.duration.text = (dur_text -5).toString()
+                    return@setOnLongClickListener true
+                }
+                holder.plusButton.setOnLongClickListener{
+                    val dur_text = holder.duration.text.toString().toInt()
+                    if (dur_text < 600)
+                    holder.duration.text = (dur_text + 5).toString()
+                    return@setOnLongClickListener true
+                }
+
 
             }
         }
@@ -53,6 +78,8 @@ class PhaseRecyclerAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         val title: TextView = itemView.findViewById(R.id.phase_title_text)
         val image: ImageView = itemView.findViewById(R.id.phaseImage)
         val duration : TextView = itemView.findViewById(R.id.duration)
+        val minusButton: Button = itemView.findViewById(R.id.button)
+        val plusButton: Button = itemView.findViewById(R.id.button2)
 
         fun bind(phaseModel: PhaseModel){
             var imgRes: Int = R.drawable.ic_baseline_directions_run_24

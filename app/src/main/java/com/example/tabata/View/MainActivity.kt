@@ -88,6 +88,11 @@ class MainActivity : AppCompatActivity(), SequenceRecyclerAdapter.ClickListener 
                 R.id.radioButton3,
                 1,
                 true)
+            val seq2 = SequenceModel( 2,
+                "se",
+                R.id.radioButton3,
+                1,
+                true)
 
             val phase1 = PhaseModel(
                 phaseId = 1,
@@ -108,12 +113,29 @@ class MainActivity : AppCompatActivity(), SequenceRecyclerAdapter.ClickListener 
 
             )
 
+            val phase3 = PhaseModel(
+                phaseId = null,
+                sequenceId = 1,
+                phaseType = PhaseType.BREAK,
+                title = "breakPhase",
+                duration = 3,
+                order = 3,
+
+                )
+
             db.withTransaction {
                 db.getDao().insertSequence(seq)
-                db.getDao().insertPhase(phase1, phase2)
+                db.getDao().insertSequence(seq2)
+
+                db.getDao().insertPhase(phase1)
+                db.getDao().insertPhase(phase2, phase3)
+
                 val result = db.getDao().getAllSequences()
+                val result2 = db.getDao().getAllSequencesWithPhases()
+
+                Log.d("myinsert", "$result2")
+
                 blogAdapter.submitList(result)
-                Log.d("recyclerviewdb", "$result")
             }
         }
     }
@@ -149,7 +171,7 @@ class MainActivity : AppCompatActivity(), SequenceRecyclerAdapter.ClickListener 
 
     override fun onLongClick(sequence: SequenceModel) {
         Toast.makeText(this@MainActivity, "Yoo longclicked sequence", Toast.LENGTH_LONG).show()
-        pressedSequenceId = sequence.sequenceId!!
+        pressedSequenceId = sequence.SequenceId!!
         editMenu = true
         invalidateOptionsMenu()
     }

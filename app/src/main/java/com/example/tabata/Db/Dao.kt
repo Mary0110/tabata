@@ -18,8 +18,8 @@ interface Dao {
     @Query("SELECT * FROM sequences")
     fun getAllSequences(): List<SequenceModel>
 
-    @Query("SELECT * FROM phases WHERE :seqId = sequenceId ORDER BY `order`  ")
-    fun getPhases(seqId:Int): List<PhaseModel>
+   /* @Query("SELECT * FROM phases WHERE :seqId = sequenceId ORDER BY `order`  ")
+    fun getPhases(seqId:Int): List<PhaseModel>*/
 
     @Query("SELECT * FROM sequences WHERE :seqId = sequence_id ")
     fun getSequence(seqId:Int): SequenceModel
@@ -34,9 +34,6 @@ interface Dao {
     @Query("SELECT * FROM sequences")
     fun getAllSequencesWithPhases():List<SequenceWithPhases>
 
-    @Transaction
-    @Query("SELECT * FROM sequences")
-    fun getAllSequenceWithPhases():SequenceWithPhases
 
     @Query("DELETE FROM sequences")
     fun deleteAllSequences()

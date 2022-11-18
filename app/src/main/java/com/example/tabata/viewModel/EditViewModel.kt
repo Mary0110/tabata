@@ -23,12 +23,13 @@ class EditViewModel(application: Application, mParam: Int): AndroidViewModel(app
     lateinit var repo : Repo
    // var data: LiveData<List<SequenceWithPhases>>
     init{
+       Log.d("myinitialized", "init")
         var db = MyDb.getDb(application)
         repo = Repo(db)
        viewModelScope.launch {
-           curr = repo.getAll().find { it.sequence.sequenceId == mParam }!!
+           curr = repo.getAll().find { it.sequence.SequenceId == mParam }!!
            title.value = curr.sequence.title
-           Log.d("my", "${title.value}")
+           Log.d("my", "${curr.phases}")
            sets.value = curr.sequence.sets_number
            color.value = curr.sequence.color
            phasesList.value = curr.phases.toMutableList()

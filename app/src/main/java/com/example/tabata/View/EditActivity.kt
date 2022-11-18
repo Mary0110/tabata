@@ -29,7 +29,7 @@ import kotlinx.coroutines.launch
 class EditActivity : AppCompatActivity() {
 
     private lateinit var phaseAdapter: PhaseRecyclerAdapter
-    private  var currentSequenceId: Int = 0
+    private  var currentSequenceId: Int? = 0
 
     lateinit var editViewModel: EditViewModel
 
@@ -44,13 +44,14 @@ class EditActivity : AppCompatActivity() {
         )
         currentSequenceId = intent.getIntExtra("sequence_id", 0)
 
-        val viewModel: EditViewModel by viewModels { MyViewModelFactory(getApplication(), currentSequenceId) }
+        val viewModel: EditViewModel by viewModels { MyViewModelFactory(getApplication(), currentSequenceId!!) }
         editViewModel = viewModel
 
         Log.d("my", "${editViewModel.phasesList.value}")
         initRecyclerView()
-
-        phaseAdapter.submitList(editViewModel.phasesList.value!!.toList())
+        val list = editViewModel.phasesList.value
+        if(list != null)
+            phaseAdapter.submitList(list.toList())
         //editViewModel = ViewModelProvider(this)[EditViewModel::class.java]
 
         editBinding.lifecycleOwner = this
@@ -123,6 +124,7 @@ class EditActivity : AppCompatActivity() {
         var size = 0
         if(editViewModel.phasesList.value?.size != null)
             size = editViewModel.phasesList.value?.size!!
+        Log.d("currseqid", "$currentSequenceId")
         val newPhase = PhaseModel(phaseId = null,sequenceId = currentSequenceId, phaseType = type, order = size+1)
         editViewModel.phasesList.value?.add(newPhase)
         phaseAdapter.submitList(editViewModel.phasesList.value!!.toList())
