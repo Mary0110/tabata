@@ -51,7 +51,7 @@ class PhaseRecyclerAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 holder.plusButton.setOnLongClickListener{
                     val dur_text = holder.duration.text.toString().toInt()
                     if (dur_text < 600)
-                    holder.duration.text = (dur_text + 5).toString()
+                        holder.duration.text = (dur_text + 5).toString()
                     return@setOnLongClickListener true
                 }
 

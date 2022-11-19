@@ -1,5 +1,6 @@
 package com.example.tabata.View
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -46,12 +47,15 @@ class EditActivity : AppCompatActivity() {
 
         val viewModel: EditViewModel by viewModels { MyViewModelFactory(getApplication(), currentSequenceId!!) }
         editViewModel = viewModel
-
         Log.d("my", "${editViewModel.phasesList.value}")
         initRecyclerView()
-        val list = editViewModel.phasesList.value
-        if(list != null)
-            phaseAdapter.submitList(list.toList())
+        editViewModel.phasesList.observe(this){
+            phaseAdapter.submitList(it.toList())
+        }
+//        val list = editViewModel.phasesList.value
+//        if(list != null)
+//        {phaseAdapter.submitList(list.toList())
+//        phaseAdapter.notifyDataSetChanged()}
         //editViewModel = ViewModelProvider(this)[EditViewModel::class.java]
 
         editBinding.lifecycleOwner = this
