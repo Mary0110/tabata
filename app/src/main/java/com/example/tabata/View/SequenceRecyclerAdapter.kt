@@ -50,6 +50,7 @@ class SequenceRecyclerAdapter(val listener: ClickListener) : RecyclerView.Adapte
 
     fun submitList(seqList: List<SequenceModel>){
         items = seqList
+        notifyDataSetChanged()
     }
 
     class SequenceViewHolder

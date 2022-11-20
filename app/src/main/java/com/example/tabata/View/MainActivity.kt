@@ -19,6 +19,7 @@ import com.example.tabata.Db.MyDb
 import com.example.tabata.Models.PhaseModel
 import com.example.tabata.Models.PhaseType
 import com.example.tabata.Models.SequenceModel
+import com.example.tabata.viewModel.MainViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -28,13 +29,18 @@ class MainActivity : AppCompatActivity(), SequenceRecyclerAdapter.ClickListener 
     private lateinit var blogAdapter: SequenceRecyclerAdapter
     //private val myDbManager = MyDbManager(this)
     private var editMenu :Boolean = false
-
+    lateinit var viewModel: MainViewModel
     private var pressedSequenceId: Int = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         addDataSet()
         initRecyclerView(this)
+        viewModel= MainViewModel(application)
+        viewModel.data.observe(this){
+            blogAdapter.submitList(it)
+        }
+
     }
 
     override fun onResume() {
@@ -130,12 +136,11 @@ class MainActivity : AppCompatActivity(), SequenceRecyclerAdapter.ClickListener 
                 db.getDao().insertPhase(phase1)
                 db.getDao().insertPhase(phase2, phase3)
 
-                val result = db.getDao().getAllSequences()
                 val result2 = db.getDao().getAllSequencesWithPhases()
 
                 Log.d("myinsert", "$result2")
 
-                blogAdapter.submitList(result)
+                //blogAdapter.submitList(result)
             }
         }
     }

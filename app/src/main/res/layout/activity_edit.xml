@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable
-            name="viewmodel"
+            name="viewModel"
             type="com.example.tabata.viewModel.EditViewModel" />
     </data>
 
@@ -21,9 +21,9 @@
         android:layout_height="70dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="16dp"
-        android:inputType="textPersonName"
-        android:text="@{viewmodel.title}"
-        android:onTextChanged="@{viewmodel.onTextChanged}"
+        android:inputType="text"
+        android:onTextChanged="@{viewModel::onTextChanged}"
+        android:text="@{viewModel.title}"
         app:layout_constraintBottom_toTopOf="@+id/phase_recyclerView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -72,8 +72,8 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
-                android:checkedButton="@{viewmodel.color}"
-                android:onCheckedChanged="@{viewmodel.onSplitTypeChanged}"
+                android:checkedButton="@{viewModel.color}"
+                android:onCheckedChanged="@{viewModel.onSplitTypeChanged}"
                 android:orientation='horizontal'
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -139,7 +139,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"
             android:text="+"
-            android:onClick="@{() -> viewmodel.OnPlusSets()}"
+            android:onClick="@{() -> viewModel.OnPlusSets()}"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -170,7 +170,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:text="-"
-            android:onClick="@{() -> viewmodel.OnMinusSets()}"
+            android:onClick="@{() -> viewModel.OnMinusSets()}"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/s_num"
@@ -186,7 +186,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:inputType="number"
-            android:text="@{String.valueOf(viewmodel.sets)}"
+            android:text="@{String.valueOf(viewModel.sets)}"
             android:textAlignment="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/button71"
@@ -196,11 +196,13 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/phase_recyclerView"
-        android:layout_width="418dp"
+        android:layout_width="match_parent"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:layout_height="0dp"
         android:layout_marginStart="1dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
+        app:itemViewModels="@{viewModel.data}"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout7"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

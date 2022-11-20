@@ -1,6 +1,5 @@
 package com.example.tabata.View
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -9,22 +8,15 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.withTransaction
-import com.example.tabata.Db.MyDb
-import com.example.tabata.Models.PhaseModel
 import com.example.tabata.Models.PhaseType
 import com.example.tabata.Models.SequenceModel
 import com.example.tabata.R
-import com.example.tabata.viewModel.EditViewModel
 import com.example.tabata.databinding.ActivityEditBinding
+import com.example.tabata.viewModel.EditViewModel
 import com.example.tabata.viewModel.MyViewModelFactory
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.example.tabata.viewModel.PhaseViewModel
 
 
 class EditActivity : AppCompatActivity() {
@@ -32,7 +24,7 @@ class EditActivity : AppCompatActivity() {
     private lateinit var phaseAdapter: PhaseRecyclerAdapter
     private  var currentSequenceId: Int? = 0
 
-    lateinit var editViewModel: EditViewModel
+    lateinit var viewModel: EditViewModel
 
 
 
@@ -40,28 +32,33 @@ class EditActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         //setContentView(R.layout.activity_edit)
 
-        val editBinding: ActivityEditBinding = DataBindingUtil.setContentView(this,
+       /* val editBinding: ActivityEditBinding = DataBindingUtil.setContentView(this,
             R.layout.activity_edit
-        )
+        )*/
         currentSequenceId = intent.getIntExtra("sequence_id", 0)
-
-        val viewModel: EditViewModel by viewModels { MyViewModelFactory(getApplication(), currentSequenceId!!) }
-        editViewModel = viewModel
+        val editViewModel: EditViewModel by viewModels { MyViewModelFactory(getApplication(), currentSequenceId!!) }
+        //viewModel = editViewModel
+        val binding = ActivityEditBinding.inflate(layoutInflater)
+        binding.lifecycleOwner = this
+        binding.viewModel = editViewModel
+        setContentView(binding.root)
+//        binding.viewModel.title.observe(this){
+//            binding.seqTitle.setText("blalalala")
+//        }
+//        val vfd = findViewById<TextView>(R.id.seqTitle)
+//        viewModel.title.observe(this){
+//            vfd.text = it
+//        }
+        /*editViewModel = viewModel
         Log.d("my", "${editViewModel.phasesList.value}")
         initRecyclerView()
         editViewModel.phasesList.observe(this){
             phaseAdapter.submitList(it.toList())
         }
-//        val list = editViewModel.phasesList.value
-//        if(list != null)
-//        {phaseAdapter.submitList(list.toList())
-//        phaseAdapter.notifyDataSetChanged()}
-        //editViewModel = ViewModelProvider(this)[EditViewModel::class.java]
-
+//
         editBinding.lifecycleOwner = this
 
-        // Pass the ViewModel into the binding
-        editBinding.viewmodel = editViewModel
+        editBinding.viewmodel = editViewModel*/
         //phaseAdapter.submitList(editViewModel.phasesList.value as List<PhaseModel>)
         val current_sequence = intent.getIntExtra("sequence_id", 0)
        /* if(current_sequence != 0)
@@ -126,19 +123,19 @@ class EditActivity : AppCompatActivity() {
     }
     private fun insertPhase(type: PhaseType) {
         var size = 0
-        if(editViewModel.phasesList.value?.size != null)
-            size = editViewModel.phasesList.value?.size!!
+        if(viewModel.phasesList.value?.size != null)
+            size = viewModel.phasesList.value?.size!!
         Log.d("currseqid", "$currentSequenceId")
-        val newPhase = PhaseModel(phaseId = null,sequenceId = currentSequenceId, phaseType = type, order = size+1)
-        editViewModel.phasesList.value?.add(newPhase)
-        phaseAdapter.submitList(editViewModel.phasesList.value!!.toList())
-        phaseAdapter.notifyItemInserted(size)
+        val newPhase = PhaseViewModel()
+        //viewModel.phasesList.value?.add(newPhase)
+        //phaseAdapter.submitList(viewModel.phasesList.value!!.toList())
+        //phaseAdapter.notifyItemInserted(size)
     }
 
 fun setValues(seq:SequenceModel){
-    editViewModel.setTitle(seq.title)
-    editViewModel.setColor(seq.color)
-    editViewModel.setSets(seq.sets_number)
+   // viewModel.setTitle(seq.title)
+    viewModel.setColor(seq.color)
+    viewModel.setSets(seq.sets_number)
 }
 
 

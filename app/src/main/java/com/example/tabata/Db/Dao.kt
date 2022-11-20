@@ -16,7 +16,7 @@ interface Dao {
     fun insertSequence(seq: SequenceModel)
 
     @Query("SELECT * FROM sequences")
-    fun getAllSequences(): List<SequenceModel>
+    fun getAllSequences(): LiveData<List<SequenceModel>>
 
    /* @Query("SELECT * FROM phases WHERE :seqId = sequenceId ORDER BY `order`  ")
     fun getPhases(seqId:Int): List<PhaseModel>*/

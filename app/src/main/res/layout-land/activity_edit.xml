@@ -8,7 +8,7 @@
     <data>
 
         <variable
-            name="viewmodel"
+            name="viewModel"
             type="com.example.tabata.viewModel.EditViewModel" />
     </data>
 
@@ -60,8 +60,8 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
-                    android:checkedButton="@{viewmodel.color}"
-                    android:onCheckedChanged="@{viewmodel.onSplitTypeChanged}"
+                    android:checkedButton="@{viewModel.color}"
+                    android:onCheckedChanged="@{viewModel.onSplitTypeChanged}"
                     android:orientation='horizontal'
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -124,8 +124,8 @@
                 android:layout_marginBottom="8dp"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:onTextChanged="@{viewmodel.onTextChanged}"
-                android:text="@{viewmodel.title}"
+                android:onTextChanged="@{viewModel.onTextChanged}"
+                android:text="@{viewModel.title}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -152,7 +152,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="8dp"
-                android:onClick="@{() -> viewmodel.OnPlusSets()}"
+                android:onClick="@{() -> viewModel.OnPlusSets()}"
                 android:text="+"
 
                 android:textColor="@color/white"
@@ -182,7 +182,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
-                android:onClick="@{() -> viewmodel.OnMinusSets()}"
+                android:onClick="@{() -> viewModel.OnMinusSets()}"
                 android:text="-"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -199,7 +199,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 android:inputType="number"
-                android:text="@{String.valueOf(viewmodel.sets)}"
+                android:text="@{String.valueOf(viewModel.sets)}"
                 android:textAlignment="center"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/button71"
@@ -214,6 +214,9 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="1dp"
             android:layout_marginBottom="1dp"
+            app:itemViewModels="@{viewModel.data}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/constraintLayout7"
             app:layout_constraintStart_toStartOf="parent"

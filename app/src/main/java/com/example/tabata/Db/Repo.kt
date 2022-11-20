@@ -24,6 +24,10 @@ suspend fun getAll(): List<SequenceWithPhases>{
     }
     return data
 }
+
+    fun getSequences(): LiveData<List<SequenceModel>> = database.getDao().getAllSequences()
+
+
    // val phases_of_seq : Flow<List<PhaseModel>> = database.getDao().getPhases(seqId)
    /* fun getById(id:Int):SequenceWithPhases?
    {
