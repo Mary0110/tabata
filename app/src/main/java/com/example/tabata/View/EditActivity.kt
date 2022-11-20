@@ -15,6 +15,7 @@ import com.example.tabata.Models.SequenceModel
 import com.example.tabata.R
 import com.example.tabata.databinding.ActivityEditBinding
 import com.example.tabata.viewModel.EditViewModel
+import com.example.tabata.viewModel.ItemViewModel
 import com.example.tabata.viewModel.MyViewModelFactory
 import com.example.tabata.viewModel.PhaseViewModel
 
@@ -37,7 +38,7 @@ class EditActivity : AppCompatActivity() {
         )*/
         currentSequenceId = intent.getIntExtra("sequence_id", 0)
         val editViewModel: EditViewModel by viewModels { MyViewModelFactory(getApplication(), currentSequenceId!!) }
-        //viewModel = editViewModel
+        viewModel = editViewModel
         val binding = ActivityEditBinding.inflate(layoutInflater)
         binding.lifecycleOwner = this
         binding.viewModel = editViewModel
@@ -110,7 +111,7 @@ class EditActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun initRecyclerView(){
+   /* private fun initRecyclerView(){
         val recyclerView : RecyclerView = findViewById(R.id.phase_recyclerView)
         recyclerView.apply {
             layoutManager = LinearLayoutManager(this@EditActivity)
@@ -120,16 +121,16 @@ class EditActivity : AppCompatActivity() {
             adapter = phaseAdapter
             //phaseAdapter.submitList(result)
         }
-    }
+    }*/
     private fun insertPhase(type: PhaseType) {
         var size = 0
         if(viewModel.phasesList.value?.size != null)
             size = viewModel.phasesList.value?.size!!
-        Log.d("currseqid", "$currentSequenceId")
+        //Log.d("currseqid", "$currentSequenceId")
         val newPhase = PhaseViewModel()
-        //viewModel.phasesList.value?.add(newPhase)
+        viewModel.phasesList.value = viewModel.phasesList.value?.plus(newPhase)
         //phaseAdapter.submitList(viewModel.phasesList.value!!.toList())
-        //phaseAdapter.notifyItemInserted(size)
+            //phaseAdapter.notifyItemInserted(size-1)
     }
 
 fun setValues(seq:SequenceModel){

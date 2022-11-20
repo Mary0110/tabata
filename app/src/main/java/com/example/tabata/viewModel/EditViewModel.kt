@@ -12,7 +12,8 @@ import kotlinx.coroutines.launch
 
 
 class EditViewModel(application: Application, mParam: Int): AndroidViewModel(application) {
-    val phasesList = MutableLiveData<List<ItemViewModel>>(emptyList())
+    var phasesList = MutableLiveData<List<ItemViewModel>>(emptyList())
+
     private var _title = MutableLiveData<String>()
     var sets = MutableLiveData<Int>()
     var color = MutableLiveData<Int>()

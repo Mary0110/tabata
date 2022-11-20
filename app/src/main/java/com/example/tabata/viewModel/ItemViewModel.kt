@@ -15,4 +15,5 @@ interface ItemViewModel {
 class PhaseViewModel(val title: String = "default title"/*, val duration: Int*/) : BaseObservable(), ItemViewModel {
     override val layoutId: Int = R.layout.phase_row
     override val viewType: Int = EditViewModel.PHASE_ITEM
+
 }
