@@ -8,10 +8,10 @@ import androidx.lifecycle.ViewModelProvider;
 
 public class MyViewModelFactory implements ViewModelProvider.Factory {
     private Application mApplication;
-    private int mParam;
+    private long mParam;
 
 
-    public MyViewModelFactory(Application application, int param) {
+    public MyViewModelFactory(Application application, long param) {
         mApplication = application;
         mParam = param;
     }

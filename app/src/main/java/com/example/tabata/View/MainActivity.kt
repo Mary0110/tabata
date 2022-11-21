@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity(), SequenceRecyclerAdapter.ClickListener 
     //private val myDbManager = MyDbManager(this)
     private var editMenu :Boolean = false
     lateinit var viewModel: MainViewModel
-    private var pressedSequenceId: Int = 0
+    private var pressedSequenceId: Long = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -38,13 +38,30 @@ class MainActivity : AppCompatActivity(), SequenceRecyclerAdapter.ClickListener 
         initRecyclerView(this)
         viewModel= MainViewModel(application)
         viewModel.data.observe(this){
-            blogAdapter.submitList(it)
+            Log.d("oncreatemy", "${it.lastIndex}")
+
+            blogAdapter.submitList(it.toMutableList())
         }
 
     }
 
+    override fun onRestart() {
+        super.onRestart()
+        invalidateOptionsMenu()
+        viewModel.data.observe(this){
+            Log.d("onrestartmy", "${it.lastIndex}")
+            blogAdapter.submitList(it.toMutableList())
+        }
+        super.onResume()
+    }
     override fun onResume() {
         invalidateOptionsMenu()
+        viewModel.updateData()
+        viewModel.data.observe(this){
+            Log.d("myonres", "${it.lastIndex}")
+
+            blogAdapter.submitList(it.toMutableList())
+        }
         super.onResume()
     }
 
@@ -78,6 +95,10 @@ class MainActivity : AppCompatActivity(), SequenceRecyclerAdapter.ClickListener 
             val intentToEditActivity = Intent(this, EditActivity::class.java)
             intentToEditActivity.putExtra("sequence_id", pressedSequenceId)
             startActivity(intentToEditActivity)
+            Toast.makeText(this@MainActivity, "Yoo clicked pencil", Toast.LENGTH_LONG).show()
+        }
+        if (id == R.id.delete) {
+            viewModel.deleteSequence(pressedSequenceId)
             Toast.makeText(this@MainActivity, "Yoo clicked pencil", Toast.LENGTH_LONG).show()
         }
         return super.onOptionsItemSelected(item)
@@ -159,11 +180,6 @@ class MainActivity : AppCompatActivity(), SequenceRecyclerAdapter.ClickListener 
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        //myDbManager.closeDb()
-
-    }
 
     override fun onClick(sequence: SequenceModel) {
         Toast.makeText(this@MainActivity, "Yoo clicked sequence", Toast.LENGTH_LONG).show()

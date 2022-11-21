@@ -31,7 +31,7 @@
             app:layout_constraintEnd_toStartOf="@+id/constraintLayout"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_baseline_directions_run_24" />
+            app:imageResource="@{itemViewModel.imageResource}" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
@@ -62,7 +62,7 @@
                 android:id="@+id/duration"
                 android:layout_width="108dp"
                 android:layout_height="81dp"
-                android:text="0"
+                android:text="@{String.valueOf(itemViewModel.duration)}"
                 android:textAlignment="center"
                 android:textSize="48sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -79,6 +79,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
                 android:text="-"
+                android:onClick="@{()->itemViewModel.onClickMinus()}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/duration"
                 app:layout_constraintStart_toStartOf="parent"
@@ -91,6 +92,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
                 android:text="+"
+                android:onClick="@{()->itemViewModel.onClickPlus()}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/duration"

@@ -8,8 +8,12 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.withTransaction
+import com.example.tabata.Db.MyDb
+import com.example.tabata.Models.PhaseModel
 import com.example.tabata.Models.PhaseType
 import com.example.tabata.Models.SequenceModel
 import com.example.tabata.R
@@ -18,12 +22,14 @@ import com.example.tabata.viewModel.EditViewModel
 import com.example.tabata.viewModel.ItemViewModel
 import com.example.tabata.viewModel.MyViewModelFactory
 import com.example.tabata.viewModel.PhaseViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class EditActivity : AppCompatActivity() {
 
-    private lateinit var phaseAdapter: PhaseRecyclerAdapter
-    private  var currentSequenceId: Int? = 0
+   /// private lateinit var phaseAdapter: PhaseRecyclerAdapter
+    private  var currentSequenceId: Long? = 0
 
     lateinit var viewModel: EditViewModel
 
@@ -36,7 +42,8 @@ class EditActivity : AppCompatActivity() {
        /* val editBinding: ActivityEditBinding = DataBindingUtil.setContentView(this,
             R.layout.activity_edit
         )*/
-        currentSequenceId = intent.getIntExtra("sequence_id", 0)
+        currentSequenceId = intent.getLongExtra("sequence_id", 0)
+        Log.d("seqmy", "$currentSequenceId")
         val editViewModel: EditViewModel by viewModels { MyViewModelFactory(getApplication(), currentSequenceId!!) }
         viewModel = editViewModel
         val binding = ActivityEditBinding.inflate(layoutInflater)
@@ -61,7 +68,6 @@ class EditActivity : AppCompatActivity() {
 
         editBinding.viewmodel = editViewModel*/
         //phaseAdapter.submitList(editViewModel.phasesList.value as List<PhaseModel>)
-        val current_sequence = intent.getIntExtra("sequence_id", 0)
        /* if(current_sequence != 0)
             readFromDb(current_sequence)*/
 
@@ -79,11 +85,15 @@ class EditActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
         if (id == R.id.save_button) {
+            viewModel.saveSequence()
+            Log.d("mycff", "")
+            //viewModel.savePhases()
             //TODO:saveSequence()
             val intentToTimerScreen = Intent(this, TimerActivity::class.java)
             startActivity(intentToTimerScreen)
-
             Toast.makeText(this@EditActivity, "Yoo clicked save", Toast.LENGTH_LONG).show()
+            finish()
+
         }
         else if (id == R.id.work_submenu)
         {
@@ -127,13 +137,18 @@ class EditActivity : AppCompatActivity() {
         if(viewModel.phasesList.value?.size != null)
             size = viewModel.phasesList.value?.size!!
         //Log.d("currseqid", "$currentSequenceId")
-        val newPhase = PhaseViewModel()
+        val newPhase = PhaseViewModel(type = type)
         viewModel.phasesList.value = viewModel.phasesList.value?.plus(newPhase)
         //phaseAdapter.submitList(viewModel.phasesList.value!!.toList())
             //phaseAdapter.notifyItemInserted(size-1)
     }
 
-fun setValues(seq:SequenceModel){
+    private fun addDataSet() {
+        var phases: MutableList<PhaseModel>
+
+    }
+
+        fun setValues(seq:SequenceModel){
    // viewModel.setTitle(seq.title)
     viewModel.setColor(seq.color)
     viewModel.setSets(seq.sets_number)

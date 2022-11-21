@@ -14,7 +14,7 @@
         android:id="@+id/card"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        >
+        android:background="#00BCD4">
 
 
         <TextView
@@ -24,6 +24,9 @@
             android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginRight="16dp"
+            android:backgroundTint="#FFFFFF"
+            android:backgroundTintMode="src_over"
+            android:fontFamily="sans-serif-black"
             android:text="Title of sequence"
             android:textColor="#000"
             android:textSize="34sp"

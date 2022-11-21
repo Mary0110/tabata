@@ -9,8 +9,8 @@ import com.example.tabata.R
 
 @Entity(tableName = "sequences")
 data class SequenceModel (
-    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "sequence_id")  val SequenceId: Int?,
-    @NonNull var title: String,
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "sequence_id")  val SequenceId: Long?,
+    @NonNull var title: String = "default title",
     @NonNull @IdRes var color: Int = R.id.radioButton3,
     @NonNull var sets_number: Int = 1,
     @NonNull @ColumnInfo(name = "sound_effect") val SoundEffect: Boolean

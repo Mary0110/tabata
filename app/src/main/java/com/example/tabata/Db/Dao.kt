@@ -12,9 +12,19 @@ interface Dao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertPhase(vararg phase: PhaseModel)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertSequence(seq: SequenceModel)
 
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertSequence(seq: SequenceModel):Long
+
+    @Transaction
+     fun addBoth(shoppingList: SequenceModel, items: List<PhaseModel>) {
+
+        val listId = insertSequence(shoppingList)
+
+        items.forEach { it.sequenceId = listId }
+        insertPhase(*items.toTypedArray())
+    }
     @Query("SELECT * FROM sequences")
     fun getAllSequences(): LiveData<List<SequenceModel>>
 
@@ -34,6 +44,11 @@ interface Dao {
     @Query("SELECT * FROM sequences")
     fun getAllSequencesWithPhases():List<SequenceWithPhases>
 
+    @Delete
+    fun deletePhase(interval: PhaseModel)
+
+    @Delete
+    fun deleteSequence(seq: SequenceModel)
 
     @Query("DELETE FROM sequences")
     fun deleteAllSequences()

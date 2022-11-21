@@ -4,6 +4,7 @@ package com.example.tabata.View
 
 import android.annotation.SuppressLint
 import android.graphics.Color
+import android.text.method.TextKeyListener.clear
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.tabata.Models.SequenceModel
 import com.example.tabata.R
 import java.security.AccessController.getContext
+import java.util.Collections.addAll
 
 
 class SequenceRecyclerAdapter(val listener: ClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>()
@@ -23,7 +25,7 @@ class SequenceRecyclerAdapter(val listener: ClickListener) : RecyclerView.Adapte
     //var selectedPos = RecyclerView.NO_POSITION
     //private val TAG: String = "AppDebug"
 
-    private var items: List<SequenceModel> = ArrayList()
+    private var items: MutableList<SequenceModel> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return SequenceViewHolder(
@@ -37,7 +39,7 @@ class SequenceRecyclerAdapter(val listener: ClickListener) : RecyclerView.Adapte
         when(holder) {
             is SequenceViewHolder -> {
                 holder.bind(items.get(position), listener)
-
+                //holder.card.setBackgroundColor(Color.parseColor("#FFBB86FC"))
             }
         }
 
@@ -48,8 +50,12 @@ class SequenceRecyclerAdapter(val listener: ClickListener) : RecyclerView.Adapte
         return items.size
     }
 
-    fun submitList(seqList: List<SequenceModel>){
-        items = seqList
+    fun submitList(seqList: MutableList<SequenceModel>){
+        items.run {
+            clear()
+            addAll(seqList)
+        }
+        //items = seqList.toMutableList()
         notifyDataSetChanged()
     }
 
@@ -65,16 +71,16 @@ class SequenceRecyclerAdapter(val listener: ClickListener) : RecyclerView.Adapte
             title.text = sequenceModel.title
 
 
-            var backgroundColor = Color.parseColor("#FFEB3B")
-//
+            var backgroundColor = itemView.context.resources.getColor(R.color.mygreen)
+
             if(sequenceModel.color == R.id.radioButton3)
-                backgroundColor = Color.parseColor("#4CAF50")
+                 backgroundColor = itemView.context.resources.getColor(R.color.myred)
             else if(sequenceModel.color ==  R.id.radioButton4)
-                backgroundColor = Color.parseColor("#FFEB3B")
+                backgroundColor = itemView.context.resources.getColor(R.color.myyellow)
             else if(sequenceModel.color ==  R.id.radioButton5)
-                backgroundColor = Color.parseColor("#F44336")
+                backgroundColor = itemView.context.resources.getColor(R.color.mygreen)
             card.setBackgroundColor((backgroundColor))
-            Log.d("ifstat", "inside")
+            Log.d("ifstat", "${backgroundColor}")
 
             itemView.setOnClickListener{
                 listener.onClick(sequenceModel)
