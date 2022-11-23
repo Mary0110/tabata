@@ -3,7 +3,6 @@ package com.example.tabata.viewModel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tabata.Db.MyDb
 import com.example.tabata.Db.Repo
@@ -33,5 +32,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application){
 
     fun updateData(){
         data = repo.getSequences()
+    }
+
+    fun getdata(): List<SequenceModel>?
+    {
+            return data.value
     }
 }

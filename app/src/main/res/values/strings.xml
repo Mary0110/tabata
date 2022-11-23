@@ -3,4 +3,47 @@
     <string name="work">work</string>
     <string name="short_break">break</string>
     <string name="long_break">long_break</string>
+    <string name="overall_workout">Overall: %s / %2$d intervals.</string>
+    <string name="msg_new_interval">Added new interval</string>
+    <string name="channel_name">Добавлен новый интервал</string>
+    <string name="channel_description">Добавлен новый интервал</string>
+    <string name="theme_setting_summary">Switch app theme</string>
+    <string name="language_setting_summary">Change language</string>
+    <string name="theme_setting_title">Theme: Day / Night</string>
+    <string name="language_setting_title">Language: English / Russian</string>
+    <string name="delete_all_setting_title">Delete all data</string>
+    <string name="delete_workout">DELETE</string>
+    <string name="font_settings">Font size</string>
+    <string-array name="interval_types">
+        <item> </item>
+        <item>Preparation</item>
+        <item>Work</item>
+        <item>Rest</item>
+        <item>Rest between sets</item>
+        <item>Calm down</item>
+        <item>Delete</item>
+    </string-array>
+
+    <string-array name="add_interval_up_down">
+        <item> </item>
+        <item>Add interval higher</item>
+        <item>Add interval lower</item>
+    </string-array>
+
+    <string-array name="font_sizes_array">
+        <item>Small</item>
+        <item>Normal</item>
+        <item>Large</item>
+    </string-array>
+
+    <string-array name="font_sizes_entries_array">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="default_description">Description</string>
+    <string name="data_cleaned_msg">Cleaned all data from database</string>
+    <string name="default_workout_name">Select name</string>
 </resources>

@@ -45,6 +45,14 @@ class EditViewModel(application: Application, val mParam: Long):
 
     }
 
+    fun getLastAddedId(): Long{
+        var id: Long = -1
+        viewModelScope.launch {
+           id =  repo.getLastPhase()
+        }
+        return id
+    }
+
     private fun loadData(application: Application, mParam:Long) {
 
         viewModelScope.launch {
@@ -63,7 +71,7 @@ class EditViewModel(application: Application, val mParam: Long):
     private fun createViewData(phaseList: List<PhaseModel>): List<PhaseViewModel> {
         val viewData = mutableListOf<PhaseViewModel>()
         phaseList.forEach {
-            viewData.add(PhaseViewModel(it.title, it.duration, it.phaseType))
+            viewData.add(PhaseViewModel(it.title, it.duration, it.phaseType, it.phaseId!!))
             }
         Log.d("my3", "${viewData}")
 
@@ -154,7 +162,7 @@ class EditViewModel(application: Application, val mParam: Long):
                 else{
                     var list: MutableList<PhaseModel> = mutableListOf()
                     phasesList.value!!.forEachIndexed{ind, item ->
-                        var phase = PhaseModel(sequenceId = null,
+                        var phase = PhaseModel(sequenceId = mParam,
                             phaseType = item.type,
                             title = item.title,
                             duration = item.duration,
@@ -162,28 +170,27 @@ class EditViewModel(application: Application, val mParam: Long):
                         list.add(phase)
                     }
                     var seq = SequenceModel(mParam, titleToPass, color.value!!, sets.value!!, true)
-                    viewModelScope.launch { repo.addBoth(seq, list.toList()) }
-
-
+                    viewModelScope.launch {
+                        repo.addBoth(seq, list.toList())
+                    }
                 }
             }
         }
     }
+
+    fun onClickDelete(id: Long) {
+        Log.d("mydel","")
+
+        if(phasesList.value != null){
+            val toDel = phasesList.value!!.find{
+                it.phaseId == id
+            }
+            var old =  phasesList.value!!.toMutableList()
+            old.remove(toDel)
+            phasesList.value = old.toList()
+            viewModelScope.launch {
+                repo.removePhaseById(id)
+            }
+        }
+    }
 }
-//    fun savePhases(){
-//        if(phasesList.value != null)
-//        {
-//            var lastSeq: Int = 0
-//            viewModelScope.launch {
-//                   lastSeq = repo.getLastSeq()
-//            }
-//            Log.d("last", "$lastSeq")
-//
-//            viewModelScope.launch {
-//            }
-//
-//        }
-//    }
-//}
-
-

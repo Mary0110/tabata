@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity(), SequenceRecyclerAdapter.ClickListener 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        addDataSet()
+        //addDataSet()
         initRecyclerView(this)
         viewModel= MainViewModel(application)
         viewModel.data.observe(this){
@@ -52,9 +52,10 @@ class MainActivity : AppCompatActivity(), SequenceRecyclerAdapter.ClickListener 
             Log.d("onrestartmy", "${it.lastIndex}")
             blogAdapter.submitList(it.toMutableList())
         }
-        super.onResume()
     }
+
     override fun onResume() {
+        super.onResume()
         invalidateOptionsMenu()
         viewModel.updateData()
         viewModel.data.observe(this){
@@ -62,7 +63,6 @@ class MainActivity : AppCompatActivity(), SequenceRecyclerAdapter.ClickListener 
 
             blogAdapter.submitList(it.toMutableList())
         }
-        super.onResume()
     }
 
     // create an action bar button
@@ -98,8 +98,13 @@ class MainActivity : AppCompatActivity(), SequenceRecyclerAdapter.ClickListener 
             Toast.makeText(this@MainActivity, "Yoo clicked pencil", Toast.LENGTH_LONG).show()
         }
         if (id == R.id.delete) {
-            viewModel.deleteSequence(pressedSequenceId)
-            Toast.makeText(this@MainActivity, "Yoo clicked pencil", Toast.LENGTH_LONG).show()
+            if(viewModel.data.value != null)
+            { viewModel.deleteSequence(pressedSequenceId)
+            Toast.makeText(this@MainActivity, "Yoo clicked pencil", Toast.LENGTH_LONG).show()}
+            else{
+                editMenu = false
+                invalidateOptionsMenu()
+            }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -184,6 +189,7 @@ class MainActivity : AppCompatActivity(), SequenceRecyclerAdapter.ClickListener 
     override fun onClick(sequence: SequenceModel) {
         Toast.makeText(this@MainActivity, "Yoo clicked sequence", Toast.LENGTH_LONG).show()
         val intentToTimerActivity = Intent(this, TimerActivity::class.java)
+        intentToTimerActivity.putExtra("id", sequence.SequenceId)
 
 
 

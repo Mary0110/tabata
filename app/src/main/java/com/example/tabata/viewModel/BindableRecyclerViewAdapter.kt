@@ -12,6 +12,7 @@ class BindableRecyclerViewAdapter : RecyclerView.Adapter<BindableViewHolder>() {
 
     var itemViewModels: List<ItemViewModel> = emptyList()
     private val viewTypeToLayoutId: MutableMap<Int, Int> = mutableMapOf()
+    lateinit var editViewModel: EditViewModel
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindableViewHolder {
         val binding: ViewDataBinding = DataBindingUtil.inflate(
@@ -19,6 +20,7 @@ class BindableRecyclerViewAdapter : RecyclerView.Adapter<BindableViewHolder>() {
             viewTypeToLayoutId[viewType] ?: 0,
             parent,
             false)
+
         return BindableViewHolder(binding)
     }
 
@@ -33,18 +35,22 @@ class BindableRecyclerViewAdapter : RecyclerView.Adapter<BindableViewHolder>() {
     override fun getItemCount(): Int = itemViewModels.size
 
     override fun onBindViewHolder(holder: BindableViewHolder, position: Int) {
-        holder.bind(itemViewModels[position])
+        holder.bind(itemViewModels[position], editViewModel)
     }
 
     fun updateItems(items: List<ItemViewModel>?) {
         itemViewModels = items ?: emptyList()
         notifyDataSetChanged()
     }
+    fun updateEditViewModel(evm: EditViewModel){
+        editViewModel = evm
+    }
 }
 
 class BindableViewHolder(private val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(itemViewModel: ItemViewModel) {
+    fun bind(itemViewModel: ItemViewModel, editViewModel: EditViewModel) {
         binding.setVariable(BR.itemViewModel, itemViewModel)
+        binding.setVariable(BR.EditViewModel, editViewModel)
     }
 }

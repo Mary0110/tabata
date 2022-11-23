@@ -8,7 +8,7 @@ import androidx.room.RoomDatabase
 import com.example.tabata.Models.PhaseModel
 import com.example.tabata.Models.SequenceModel
 
-@Database(entities = [SequenceModel::class, PhaseModel::class], version = 13)
+@Database(entities = [SequenceModel::class, PhaseModel::class], version = 14)
 abstract class MyDb: RoomDatabase() {
     abstract fun getDao(): Dao
     companion object{

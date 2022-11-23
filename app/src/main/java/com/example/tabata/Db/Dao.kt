@@ -25,6 +25,7 @@ interface Dao {
         items.forEach { it.sequenceId = listId }
         insertPhase(*items.toTypedArray())
     }
+
     @Query("SELECT * FROM sequences")
     fun getAllSequences(): LiveData<List<SequenceModel>>
 
@@ -32,7 +33,11 @@ interface Dao {
     fun getPhases(seqId:Int): List<PhaseModel>*/
 
     @Query("SELECT * FROM sequences WHERE :seqId = sequence_id ")
-    fun getSequence(seqId:Int): SequenceModel
+    fun getSequence(seqId:Long): SequenceModel
+
+    @Query("SELECT * FROM phases WHERE :seqId = parent_id")
+    fun getPhases(seqId:Long): MutableList<PhaseModel>
+
 
     @Update
     fun updatePhase(phase: PhaseModel)
@@ -57,9 +62,18 @@ interface Dao {
     fun deleteAllPhases()
 
     @Query("SELECT MAX(sequence_id) FROM sequences")
-    fun getMaxSequenceId() : Int
+    fun getMaxSequenceId() : Long
 
 
     @Query("SELECT MAX(phase_id) FROM phases")
-    fun getMaxPhaseId() : Int
+    fun getMaxPhaseId() : Long
+
+    @Query("DELETE FROM phases")
+    fun deleteAllWorkouts()
+
+    @Query("DELETE FROM phases WHERE :id = phase_id ")
+    fun deletePhaseById(id: Long)
+
+    @Query("DELETE FROM sequences")
+    fun deleteAllIntervals()
 }

@@ -7,6 +7,9 @@
         <variable
             name="itemViewModel"
             type="com.example.tabata.viewModel.PhaseViewModel" />
+        <variable
+            name="EditViewModel"
+            type="com.example.tabata.viewModel.EditViewModel" />
     </data>
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -14,7 +17,6 @@
     app:cardBackgroundColor="#FFFFFF"
     app:cardCornerRadius="2dp"
     app:cardElevation="10dp"
-
     app:cardPreventCornerOverlap="false">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -44,17 +46,19 @@
             app:layout_constraintStart_toEndOf="@+id/phaseImage"
             app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
+            <EditText
                 android:id="@+id/phase_title_text"
-                android:layout_width="306dp"
-                android:layout_height="62dp"
+                android:layout_width="0dp"
+                android:layout_height="41dp"
                 android:layout_marginTop="4dp"
+                android:layout_marginEnd="8dp"
+                android:onTextChanged="@{itemViewModel::onTextChanged}"
                 android:text="@{itemViewModel.title}"
                 android:textAlignment="center"
                 android:textColor="#000"
-                android:textSize="48sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
+                android:textSize="34sp"
+                app:layout_constraintBottom_toTopOf="@+id/duration"
+                app:layout_constraintEnd_toStartOf="@+id/button3"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -97,6 +101,21 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/duration"
                 app:layout_constraintTop_toBottomOf="@+id/phase_title_text" />
+
+            <Button
+                android:id="@+id/button3"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="x"
+                android:onClick="@{()->EditViewModel.onClickDelete(itemViewModel.phaseId)}"
+                android:textColor="#FFFFFF"
+                app:layout_constraintBottom_toTopOf="@+id/button2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/phase_title_text"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.55" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 

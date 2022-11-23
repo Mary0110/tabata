@@ -1,8 +1,10 @@
 package com.example.tabata.viewModel
 
+import android.util.Log
 import androidx.annotation.LayoutRes
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
+import androidx.databinding.adapters.TextViewBindingAdapter.OnTextChanged
 import com.example.tabata.Models.PhaseType
 import com.example.tabata.R
 import com.example.tabata.BR
@@ -16,9 +18,9 @@ interface ItemViewModel {
         get() = 0
 }
 
-class PhaseViewModel(public val title: String = "default title",
+class PhaseViewModel( @get:Bindable var title: String = "default title",
                      @get:Bindable var duration: Int = 10,
-                     val type: PhaseType)
+                     val type: PhaseType, val phaseId: Long)
     : BaseObservable(), ItemViewModel {
 
     override val layoutId: Int = R.layout.phase_row
@@ -53,4 +55,15 @@ class PhaseViewModel(public val title: String = "default title",
         return resource
     }
 
+    fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+        title = s.toString()
+        notifyPropertyChanged(BR.title)
+
+    }
+
+    fun onClickDelete()
+    {
+        Log.d("njhdscn", "")
+
+    }
 }

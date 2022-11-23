@@ -24,13 +24,22 @@ suspend fun getAll(): List<SequenceWithPhases>{
     }
     return data
 }
-    suspend fun getLastSeq(): Int{
-        val id : Int
+    suspend fun getLastSeq(): Long{
+        val id : Long
 
         withContext(Dispatchers.IO) {
             id = database.getDao().getMaxSequenceId()
         }
         return  id
+    }
+
+    suspend fun getPhases(id: Long): List<PhaseModel> {
+        val data: List<PhaseModel>
+
+        withContext(Dispatchers.IO) {
+            data = database.getDao().getPhases(id)
+        }
+        return data
     }
 
     fun getSequences(): LiveData<List<SequenceModel>> = database.getDao().getAllSequences()
@@ -82,12 +91,27 @@ suspend fun addBoth(s:SequenceModel, l:List<PhaseModel>){
 
 }
 
-     /*suspend fun refreshVideos() {
+   suspend fun removePhaseById(id: Long) {
+       withContext(Dispatchers.IO) {
+           database.getDao().deletePhaseById(id)
+       }
+   }
+
+    suspend fun getLastPhase(): Long {
+        val id : Long
+
         withContext(Dispatchers.IO) {
-            val playlist = DevByteNetwork.devbytes.getPlaylist()
-            //database.getDao().insertAll(playlist.asDatabaseModel())
+            id = database.getDao().getMaxPhaseId()
         }
-    }*/
+        return  id
+    }
+
+    /*suspend fun refreshVideos() {
+       withContext(Dispatchers.IO) {
+           val playlist = DevByteNetwork.devbytes.getPlaylist()
+           //database.getDao().insertAll(playlist.asDatabaseModel())
+       }
+   }*/
 
 
 }

@@ -6,28 +6,39 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
+import android.preference.PreferenceManager
+import android.util.Log
 import android.util.TypedValue
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.tabata.Db.Dao
+import com.example.tabata.Db.MyDb
+import com.example.tabata.Db.Repo
+import com.example.tabata.Models.PhaseModel
+import com.example.tabata.Models.PhaseType
 import com.example.tabata.R
 import com.example.tabata.services.TimerService
 import kotlin.math.roundToInt
+import com.example.tabata.databinding.ActivityTimerBinding
+import kotlinx.coroutines.launch
+
 
 class TimerActivity : AppCompatActivity() {
 
-    private lateinit var binding: WorkoutActionBinding
+    private lateinit var binding: ActivityTimerBinding
     private var timerStarted = false
 
     var time = 0.0
-    var workId : Int = -1
+    var workId : Long = -1
 
     var mxPos : Int = 1
     var curPos : Int = 0
-    var dao : WorkoutDao? = null
-    var ints : MutableList<Interval>? = null
+    var dao : Dao? = null
+    var phases : MutableList<PhaseModel>? = null
 
     companion object {
         const val CHANNEL_ID : String = "123123"
@@ -45,20 +56,25 @@ class TimerActivity : AppCompatActivity() {
             timerService = binder.getService()
             timerService.context = this@TimerActivity
             isBound = true
+            Log.d("myser", "wqq")
 
             if (timerService.isRunning == false) {
                 this@TimerActivity.foregroundStartService("Start")            }
 
-            if (timerService.id == -1)
+            if (timerService.id == (-1).toLong())
                 timerService.id = workId
             else
             {
                 workId = timerService.id
                 curPos = timerService.curPos
             }
+            val repo = Repo(MyDb.getDb(application))
 
-            dao = AppDatabase.getDatabase(application).workoutDao()
-            ints = dao?.getWorkoutIntervals(workId)
+           // dao = MyDb.getDb(application).getDao()
+            lifecycleScope.launch{
+                phases = repo.getPhases(workId).toMutableList()
+            }
+                    //dao?.getPhases(workId)
 
             timerService.isRunning = true
 
@@ -86,6 +102,7 @@ class TimerActivity : AppCompatActivity() {
             bindService(intent, connection, Context.BIND_AUTO_CREATE)
         }
         isBound = true
+        Log.d("myonstart", "$isBound")
     }
 
     override fun onStop() {
@@ -98,18 +115,20 @@ class TimerActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = WorkoutActionBinding.inflate(layoutInflater)
+        binding = ActivityTimerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val bundle: Bundle? = intent.extras
 
         bundle?.let {
             bundle.apply {
-                workId = getInt("id")
+                Log.d("myid","$workId")
+                workId = getLong("id")
+                Log.d("myid","$workId")
             }
         }
 
-        updateTheme()
+        //updateTheme()
     }
 
     private fun stopStartTimer() {
@@ -137,7 +156,7 @@ class TimerActivity : AppCompatActivity() {
         if (curPos != 0) {
             curPos--
             timerService.curPos--
-            timerService.Gtime = ints!![curPos].IntervalTime.toDouble()
+            timerService.Gtime = phases!![curPos].duration.toDouble()
 
             binding.intervalsRecyclerView.adapter?.notifyItemChanged(curPos)
             binding.intervalsRecyclerView.adapter?.notifyItemChanged(curPos + 1)
@@ -168,7 +187,7 @@ class TimerActivity : AppCompatActivity() {
             else {
 
                 timerService.curPos++
-                timerService.Gtime = ints!![curPos].IntervalTime.toDouble()
+                timerService.Gtime = phases!![curPos].duration.toDouble()
                 binding.intervalsRecyclerView.adapter?.notifyItemChanged(curPos)
                 binding.intervalsRecyclerView.adapter?.notifyItemChanged(curPos - 1)
             }
@@ -187,7 +206,7 @@ class TimerActivity : AppCompatActivity() {
             mxPos = intent.getIntExtra(TimerService.MAX_POSITION_EXTRA, 1)
             val tLeft = intent.getStringExtra(TimerService.OV_TIME_LEFT_EXTRA)
 
-            val name : String = if (nameId < 5) { WorkoutActionType.values()[nameId].name } else {"Финишь"}
+            val name : String = if (nameId < 5) { PhaseType.values()[nameId].name } else {"Финиш"}
 
             if (id == 1) {
                 binding.intervalTimeLeftTextView.text = getTimeStringFromDouble(time)
@@ -234,7 +253,7 @@ class TimerActivity : AppCompatActivity() {
 
         curPos = pos
         timerService.curPos = pos
-        timerService.Gtime = ints!![curPos].IntervalTime.toDouble()
+        timerService.Gtime = phases!![curPos].duration.toDouble()
     }
 
     private fun getTimeStringFromDouble(time: Double): String {
@@ -264,6 +283,7 @@ class TimerActivity : AppCompatActivity() {
     fun updateTheme() {
         val sharedPref = PreferenceManager.getDefaultSharedPreferences(this)
         val theme : Boolean = sharedPref.getBoolean("theme_switch_preference", false)
+        Log.d("mypref", "$theme")
         val bcg : ConstraintLayout = findViewById(R.id.action_constraint_layout)
         val font : String? = sharedPref.getString("font_preference", "-1")
 
