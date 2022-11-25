@@ -2,11 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/delete_button"
-        android:title=""
-        app:showAsAction="ifRoom"
-        android:icon="@drawable/ic_delete" />
-    <item
         android:id="@+id/save_button"
         android:title=""
         app:showAsAction="ifRoom"
@@ -18,13 +13,13 @@
         app:showAsAction="ifRoom">
         <menu>
             <item android:id="@+id/work_submenu"
-                android:title="work" />
+                android:title="@string/work_submenu_title" />
             <item android:id="@+id/break_submenu"
-                android:title="break" />
+                android:title="@string/break_submenu_item" />
             <item android:id="@+id/long_break_submenu"
-                android:title="long break" />
+                android:title="@string/long_break_menu_itemsub" />
             <item android:id="@+id/warm_up_submenu"
-                android:title="warm-up" />
+                android:title="@string/warm_up_submenu_item" />
         </menu>
     </item>
 

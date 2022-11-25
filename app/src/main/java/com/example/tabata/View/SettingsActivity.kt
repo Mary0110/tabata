@@ -16,8 +16,7 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
-        getSupportActionBar()?.setDisplayHomeAsUpEnabled(true);
-//        this.actionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true);
 
         val frg: SettingsFragment = SettingsFragment()
         frg.activity = this
@@ -47,17 +46,12 @@ class SettingsActivity : AppCompatActivity() {
         val sharedPref = PreferenceManager.getDefaultSharedPreferences(this)
         val theme : Boolean = sharedPref.getBoolean("theme_switch_preference", false)
         val bcg : ConstraintLayout = findViewById(R.id.settings_constraint_layout)
-
+        //TODO:theme
         if(theme) {
-
-            bcg.setBackgroundColor(Color.parseColor("#5e5e5e"))
-            val col : ColorDrawable = ColorDrawable(Color.parseColor("#000000"))
-            getSupportActionBar()?.setBackgroundDrawable(col)
-
-        } else {
-            bcg.setBackgroundColor(Color.parseColor("#FFFFFF"))
-            val col : ColorDrawable = ColorDrawable(Color.parseColor("#FF6200EE"))
-            getSupportActionBar()?.setBackgroundDrawable(col)
+            bcg.setBackgroundColor(baseContext.resources.getColor(R.color.darktheme))
+        }
+        else {
+            bcg.setBackgroundColor(baseContext.resources.getColor(R.color.white))
         }
     }
 

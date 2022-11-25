@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Табата</string>
+    <string name="work">Работа</string>
+    <string name="short_break">Перерыв</string>
+    <string name="long_break">Большой перерыв</string>
+    <string name="overall_workout">Overall: %s / %2$d intervals.</string>
+    <string name="msg_new_interval">Added new interval</string>
+    <string name="channel_name">Добавлен новый интервал</string>
+    <string name="channel_description">Добавлен новый интервал</string>
+    <string name="theme_setting_summary">Переклчить тему</string>
+    <string name="language_setting_summary">Сменить язык</string>
+    <string name="theme_setting_title">Тема: День / Ночь</string>
+    <string name="language_setting_title">Язык: Английский / Русский </string>
+    <string name="delete_all_setting_title">Стереть все данные</string>
+    <string name="delete_workout">DELETE</string>
+    <string name="font_settings">Размер шрифта</string>
+    <string-array name="interval_types">
+        <item> </item>
+        <item>Разминка</item>
+        <item>Работа</item>
+        <item>Перерыв</item>
+        <item>Большой перерыв</item>
+        <!--item>Calm down</item>
+        <item>Delete</item-->
+    </string-array>
+
+    <string-array name="add_interval_up_down">
+        <item> </item>
+        <item>Add interval higher</item>
+        <item>Add interval lower</item>
+    </string-array>
+
+    <string-array name="font_sizes_array">
+        <item>Small</item>
+        <item>Normal</item>
+        <item>Large</item>
+    </string-array>
+
+    <string-array name="font_sizes_entries_array">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="default_description">Description</string>
+    <string name="data_cleaned_msg">Deleted all data</string>
+    <string name="default_workout_name">Select name</string>
+
+    <string name="work_submenu_title">Работа</string>
+    <string name="break_submenu_item">Прерыв</string>
+    <string name="long_break_menu_itemsub">Большой перерыв</string>
+    <string name="warm_up_submenu_item">Разминка</string>
+    <string name="sets_title">подходы</string>
+    <string name="color_title">цвет</string>
+    <string name="sound_title">звук</string>
+
+</resources>

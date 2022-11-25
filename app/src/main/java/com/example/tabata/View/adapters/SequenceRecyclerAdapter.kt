@@ -1,28 +1,23 @@
-package com.example.tabata.View
+package com.example.tabata.View.adapters
 
 
 
-import android.annotation.SuppressLint
-import android.graphics.Color
-import android.text.method.TextKeyListener.clear
 import android.util.Log
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tabata.Models.SequenceModel
 import com.example.tabata.R
-import java.security.AccessController.getContext
-import java.util.Collections.addAll
+import com.example.tabata.viewModel.EditViewModel
 
 
 class SequenceRecyclerAdapter(val listener: ClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>()
 {
-    //var selectedPos = RecyclerView.NO_POSITION
     //private val TAG: String = "AppDebug"
 
     private var items: MutableList<SequenceModel> = ArrayList()
@@ -39,6 +34,8 @@ class SequenceRecyclerAdapter(val listener: ClickListener) : RecyclerView.Adapte
         when(holder) {
             is SequenceViewHolder -> {
                 holder.bind(items.get(position), listener)
+
+
                 //holder.card.setBackgroundColor(Color.parseColor("#FFBB86FC"))
             }
         }
@@ -67,8 +64,18 @@ class SequenceRecyclerAdapter(val listener: ClickListener) : RecyclerView.Adapte
         val title: TextView = itemView.findViewById(R.id.title_text)
         val card : ConstraintLayout = itemView.findViewById(R.id.card)
 
+        val sharedPref = PreferenceManager.getDefaultSharedPreferences(itemView.context)
+        val font : String? = sharedPref.getString("font_preference", "-1")
+
+
         fun bind(sequenceModel: SequenceModel, listener: ClickListener){
             title.text = sequenceModel.title
+            if (font == "1") {
+                title.setTextSize(TypedValue.COMPLEX_UNIT_PX,  (80).toFloat())
+            }
+            else if (font == "3") {
+                title.setTextSize(TypedValue.COMPLEX_UNIT_PX,  (150).toFloat())
+            }
 
 
             var backgroundColor = itemView.context.resources.getColor(R.color.mygreen)

@@ -1,12 +1,13 @@
-package com.example.tabata.viewModel
+package com.example.tabata.View.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
-import androidx.databinding.library.baseAdapters.BR
-
+import com.example.tabata.viewModel.ItemViewModel
+import com.example.tabata.viewModel.EditViewModel
+import com.example.tabata.BR
 
 class BindableRecyclerViewAdapter : RecyclerView.Adapter<BindableViewHolder>() {
 

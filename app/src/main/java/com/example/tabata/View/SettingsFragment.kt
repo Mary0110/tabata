@@ -6,12 +6,15 @@ import android.os.Bundle
 import android.util.TypedValue
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.lifecycle.lifecycleScope
 import androidx.preference.Preference
 
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import com.example.tabata.R
 import com.example.tabata.Db.MyDb
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.*
 
 @Suppress("DEPRECATION")
@@ -29,8 +32,9 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
         delPreference.onPreferenceClickListener = Preference.OnPreferenceClickListener {
             val dao = MyDb.getDb(requireContext()).getDao()
-            dao.deleteAllIntervals()
-            dao.deleteAllWorkouts()
+            lifecycleScope.launch(Dispatchers.IO){
+                dao.deleteAllSequences()
+            }
             Toast.makeText(context, getString(R.string.data_cleaned_msg), Toast.LENGTH_SHORT).show()
             true
         }

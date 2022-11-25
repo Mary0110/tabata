@@ -24,6 +24,9 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".View.SettingsActivity"
+            android:exported="false" />
+        <activity
             android:name=".View.EditActivity"
             android:exported="true">
             <intent-filter>

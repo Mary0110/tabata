@@ -11,204 +11,247 @@
     </data>
 
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <EditText
-        android:id="@+id/seqTitle"
-        android:layout_width="0dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="16dp"
-        android:inputType="text"
-        android:onTextChanged="@{viewModel::onTextChanged}"
-        android:text="@{viewModel.title}"
-        app:layout_constraintBottom_toTopOf="@+id/phase_recyclerView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout1"
+        android:id="@+id/edit_constraint"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/textView20"
-            android:layout_width="172dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="16dp"
+        <EditText
+            android:id="@+id/seqTitle"
+            android:layout_width="0dp"
+            android:layout_height="70dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="8dp"
-            android:text="Color"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/constraintColors"
+            android:inputType="text"
+            android:onTextChanged="@{viewModel::onTextChanged}"
+            android:text="@{viewModel.title}"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toTopOf="@+id/phase_recyclerView"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintColors"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="1dp"
-            android:layout_marginTop="1dp"
-            android:layout_marginEnd="1dp"
+            android:id="@+id/constraintLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_marginTop="3dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textView20"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout7">
 
-            <RadioGroup
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/color_title"
+                android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginStart="32dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
-                android:checkedButton="@{viewModel.color}"
-                android:onCheckedChanged="@{viewModel.onSplitTypeChanged}"
-                android:orientation='horizontal'
+                android:text="@string/color_title"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/constraintColors"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintColors"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="1dp"
+                android:layout_marginTop="1dp"
+                android:layout_marginEnd="1dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/color_title"
                 app:layout_constraintTop_toTopOf="parent">
 
-
-                <RadioButton
-                    android:id="@+id/radioButton5"
+                <RadioGroup
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:buttonTint="#4CAF50"
-                    android:foregroundTint="#4CAF50"
-                    android:textColor="#F44336"
-                    android:textColorHighlight="#F44336"
-                    android:textColorLink="#F44336"
-                    app:useMaterialThemeColors="false" />
+                    android:layout_height="0dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:checkedButton="@{viewModel.color}"
+                    android:onCheckedChanged="@{viewModel.onSplitTypeChanged}"
+                    android:orientation='horizontal'
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-                <RadioButton
-                    android:id="@+id/radioButton4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="#FFEB3B"
-                    android:buttonTint="#FFEB3B"
-                    android:textColor="#4CAF50"
-                    android:textColorHighlight="#4CAF50"
-                    android:textColorLink="#4CAF50" />
 
-                <RadioButton
-                    android:id="@+id/radioButton3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:buttonTint="#F44336"
-                    android:foregroundTint="#03A9F4"
-                    android:shadowColor="#3F51B5"
-                    android:textColor="#FFEB3B"
-                    android:textColorHighlight="#FFEB3B"
-                    android:textColorHint="#2196F3"
-                    android:textColorLink="#FFEB3B" />
-            </RadioGroup>
+                    <RadioButton
+                        android:id="@+id/radioButton5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="#4CAF50"
+                        android:foregroundTint="#4CAF50"
+                        android:textColor="#F44336"
+                        android:textColorHighlight="#F44336"
+                        android:textColorLink="#F44336"
+                        app:useMaterialThemeColors="false" />
+
+                    <RadioButton
+                        android:id="@+id/radioButton4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="#FFEB3B"
+                        android:buttonTint="#FFEB3B"
+                        android:textColor="#4CAF50"
+                        android:textColorHighlight="#4CAF50"
+                        android:textColorLink="#4CAF50" />
+
+                    <RadioButton
+                        android:id="@+id/radioButton3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="#F44336"
+                        android:foregroundTint="#03A9F4"
+                        android:shadowColor="#3F51B5"
+                        android:textColor="#FFEB3B"
+                        android:textColorHighlight="#FFEB3B"
+                        android:textColorHint="#2196F3"
+                        android:textColorLink="#FFEB3B" />
+                </RadioGroup>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout7"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_marginBottom="3dp"
+            app:layout_constraintBottom_toTopOf="@+id/constraintLayout1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
+
+            <Button
+                android:id="@+id/button71"
+                android:layout_width="50dp"
+                android:layout_height="44dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
+                android:onClick="@{() -> viewModel.OnPlusSets()}"
+                android:text="+"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/s_num"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/sets_title"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/sets_title"
+                android:textAlignment="viewStart"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/button72"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/button72"
+                android:layout_width="50dp"
+                android:layout_height="44dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:onClick="@{() -> viewModel.OnMinusSets()}"
+                android:text="-"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/s_num"
+                app:layout_constraintStart_toEndOf="@+id/sets_title"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/s_num"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:inputType="number"
+                android:text="@{String.valueOf(viewModel.sets)}"
+                android:textAlignment="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/button71"
+                app:layout_constraintStart_toEndOf="@+id/button72"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/phase_recyclerView"
+            android:layout_width="404dp"
+            android:layout_height="353dp"
+            android:layout_marginStart="1dp"
+            app:EditViewModel="@{viewModel}"
+            app:itemViewModels="@{viewModel.data}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/seqTitle" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout2"
+            android:layout_width="409dp"
+            android:layout_height="70dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginEnd="1dp"
+            app:layout_constraintBottom_toTopOf="@+id/constraintLayout7"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/phase_recyclerView">
+
+            <TextView
+                android:id="@+id/soundTitle"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/sound_title"
+                android:textAlignment="viewStart"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/switch1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.666" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switch1"
+                android:layout_width="87dp"
+                android:layout_height="55dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="70dp"
+                android:onCheckedChanged="@{(switch, checked) -> viewModel.onCheckedChanged(checked)}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/soundTitle"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout7"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="3dp"
-        app:layout_constraintBottom_toTopOf="@+id/constraintLayout1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/phase_recyclerView">
-
-        <Button
-            android:id="@+id/button71"
-            android:layout_width="50dp"
-            android:layout_height="44dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="8dp"
-            android:text="+"
-            android:onClick="@{() -> viewModel.OnPlusSets()}"
-            android:textColor="@color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/s_num"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textView71"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:text="Sets"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/button72"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/button72"
-            android:layout_width="50dp"
-            android:layout_height="44dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:text="-"
-            android:onClick="@{() -> viewModel.OnMinusSets()}"
-            android:textColor="@color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/s_num"
-            app:layout_constraintStart_toEndOf="@+id/textView71"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/s_num"
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:inputType="number"
-            android:text="@{String.valueOf(viewModel.sets)}"
-            android:textAlignment="center"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/button71"
-            app:layout_constraintStart_toEndOf="@+id/button72"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/phase_recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        app:itemViewModels="@{viewModel.data}"
-        app:EditViewModel="@{viewModel}"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toTopOf="@+id/constraintLayout7"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/seqTitle" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

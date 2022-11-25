@@ -1,48 +1,51 @@
 package com.example.tabata.View
 
 
-import android.content.ContentValues.TAG
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.lifecycleScope
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.withTransaction
 import com.example.tabata.*
-import com.example.tabata.Db.MyDb
-import com.example.tabata.Models.PhaseModel
-import com.example.tabata.Models.PhaseType
 import com.example.tabata.Models.SequenceModel
+import com.example.tabata.View.adapters.SequenceRecyclerAdapter
 import com.example.tabata.viewModel.MainViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import java.util.*
 
 
 class MainActivity : AppCompatActivity(), SequenceRecyclerAdapter.ClickListener {
 
     private lateinit var blogAdapter: SequenceRecyclerAdapter
-    //private val myDbManager = MyDbManager(this)
     private var editMenu :Boolean = false
     lateinit var viewModel: MainViewModel
     private var pressedSequenceId: Long = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        //addDataSet()
         initRecyclerView(this)
-        viewModel= MainViewModel(application)
+        val sharedPref = PreferenceManager.getDefaultSharedPreferences(this)
+        val theme = sharedPref.getBoolean("theme_switch_preference", false)
+        val lang = sharedPref.getBoolean("language_switch_preference", false)
+
+        if (lang) {
+            setLocale("ru")
+        } else {
+            setLocale("")
+        }
+        viewModel = MainViewModel(application)
         viewModel.data.observe(this){
             Log.d("oncreatemy", "${it.lastIndex}")
 
             blogAdapter.submitList(it.toMutableList())
         }
-
+        updateTheme()
     }
 
     override fun onRestart() {
@@ -67,7 +70,7 @@ class MainActivity : AppCompatActivity(), SequenceRecyclerAdapter.ClickListener 
 
     // create an action bar button
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        if(editMenu == false) {
+        if(!editMenu) {
             menuInflater.inflate(R.menu.mymenu, menu)
         }
         else {
@@ -106,72 +109,12 @@ class MainActivity : AppCompatActivity(), SequenceRecyclerAdapter.ClickListener 
                 invalidateOptionsMenu()
             }
         }
+        if(id == R.id.settings){
+            val intentToSettingsActivity = Intent(this, SettingsActivity::class.java)
+            startActivity(intentToSettingsActivity)
+        }
         return super.onOptionsItemSelected(item)
     }
-
-
-
-    private fun addDataSet(){
-        val db = MyDb.getDb(this)
-        lifecycleScope.launch(Dispatchers.IO) {
-            val seqId = 1
-            val seq = SequenceModel( 1,
-                "FirstWorkout",
-                R.id.radioButton3,
-                1,
-                true)
-            val seq2 = SequenceModel( 2,
-                "se",
-                R.id.radioButton3,
-                1,
-                true)
-
-            val phase1 = PhaseModel(
-                phaseId = 1,
-                sequenceId = 1,
-                phaseType = PhaseType.WORK,
-                title = "workPhase",
-                duration = 1,
-                order = 1,
-
-            )
-            val phase2 = PhaseModel(
-                phaseId = 2,
-                sequenceId = 1,
-                phaseType = PhaseType.BREAK,
-                title = "breakPhase",
-                duration = 1,
-                order = 2,
-
-            )
-
-            val phase3 = PhaseModel(
-                phaseId = null,
-                sequenceId = 1,
-                phaseType = PhaseType.BREAK,
-                title = "breakPhase",
-                duration = 3,
-                order = 3,
-
-                )
-
-            db.withTransaction {
-                db.getDao().insertSequence(seq)
-                db.getDao().insertSequence(seq2)
-
-                db.getDao().insertPhase(phase1)
-                db.getDao().insertPhase(phase2, phase3)
-
-                val result2 = db.getDao().getAllSequencesWithPhases()
-
-                Log.d("myinsert", "$result2")
-
-                //blogAdapter.submitList(result)
-            }
-        }
-    }
-
-
 
 
     private fun initRecyclerView(listener: SequenceRecyclerAdapter.ClickListener){
@@ -190,9 +133,6 @@ class MainActivity : AppCompatActivity(), SequenceRecyclerAdapter.ClickListener 
         Toast.makeText(this@MainActivity, "Yoo clicked sequence", Toast.LENGTH_LONG).show()
         val intentToTimerActivity = Intent(this, TimerActivity::class.java)
         intentToTimerActivity.putExtra("id", sequence.SequenceId)
-
-
-
         startActivity(intentToTimerActivity)
     }
 
@@ -201,5 +141,32 @@ class MainActivity : AppCompatActivity(), SequenceRecyclerAdapter.ClickListener 
         pressedSequenceId = sequence.SequenceId!!
         editMenu = true
         invalidateOptionsMenu()
+    }
+
+    private fun setLocale(language: String) {
+
+        val locale: Locale = Locale(language)
+        Locale.setDefault(locale)
+
+        val conf: Configuration = Configuration()
+        conf.setLocale(locale)
+
+        baseContext.resources.updateConfiguration(conf, baseContext.resources.displayMetrics)
+    }
+
+    fun updateTheme() {
+        val sharedPref = PreferenceManager.getDefaultSharedPreferences(this)
+        val theme : Boolean = sharedPref.getBoolean("theme_switch_preference", false)
+
+        val bcg : ConstraintLayout = findViewById(R.id.card_constr)
+
+        if(theme) {
+            bcg.setBackgroundColor(baseContext.resources.getColor(R.color.darktheme))
+        }
+        else {
+            bcg.setBackgroundColor(baseContext.resources.getColor(R.color.white))
+        }
+
+
     }
 }

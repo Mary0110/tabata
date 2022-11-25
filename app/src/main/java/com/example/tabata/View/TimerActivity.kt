@@ -1,8 +1,6 @@
 package com.example.tabata.View
 
 import android.content.*
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
@@ -21,16 +19,20 @@ import com.example.tabata.Db.Repo
 import com.example.tabata.Models.PhaseModel
 import com.example.tabata.Models.PhaseType
 import com.example.tabata.R
+import com.example.tabata.View.adapters.TimerAdapter
 import com.example.tabata.services.TimerService
 import kotlin.math.roundToInt
 import com.example.tabata.databinding.ActivityTimerBinding
+import com.example.tabata.viewModel.TimerViewModel
 import kotlinx.coroutines.launch
 
 
 class TimerActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityTimerBinding
+    lateinit var adapter: TimerAdapter
     private var timerStarted = false
+    lateinit var viewModel: TimerViewModel
 
     var time = 0.0
     var workId : Long = -1
@@ -38,7 +40,7 @@ class TimerActivity : AppCompatActivity() {
     var mxPos : Int = 1
     var curPos : Int = 0
     var dao : Dao? = null
-    var phases : MutableList<PhaseModel>? = null
+    var phases : MutableList<PhaseModel> = ArrayList()
 
     companion object {
         const val CHANNEL_ID : String = "123123"
@@ -70,13 +72,18 @@ class TimerActivity : AppCompatActivity() {
             }
             val repo = Repo(MyDb.getDb(application))
 
-           // dao = MyDb.getDb(application).getDao()
             lifecycleScope.launch{
                 phases = repo.getPhases(workId).toMutableList()
-            }
-                    //dao?.getPhases(workId)
+                binding.intervalsRecyclerView.layoutManager = LinearLayoutManager(this@TimerActivity)
+                adapter = TimerAdapter(this@TimerActivity, workId)
+                if(phases!!.isNotEmpty())
+                    adapter.submitList(phases)
+                Log.d("myphases", "$phases")
+                binding.intervalsRecyclerView.adapter = adapter/*TimerAdapter(this@TimerActivity, workId)*/
 
-            timerService.isRunning = true
+                timerService.isRunning = true
+
+            }
 
             registerReceiver(updateTime, IntentFilter(TimerService.TIMER_UPDATED))
 
@@ -84,8 +91,6 @@ class TimerActivity : AppCompatActivity() {
             binding.prevIntervalButton.setOnClickListener { prevTimerInterval() }
             binding.stopStartTimeButton.setOnClickListener { stopStartTimer() }
 
-            binding.intervalsRecyclerView.layoutManager = LinearLayoutManager(this@TimerActivity)
-            binding.intervalsRecyclerView.adapter = TimerAdapter(this@TimerActivity, workId)
 
             binding.stopStartTimeButton.icon = AppCompatResources.getDrawable(this@TimerActivity, R.drawable.ic_baseline_pause_24)
             timerStarted = true
@@ -128,7 +133,7 @@ class TimerActivity : AppCompatActivity() {
             }
         }
 
-        //updateTheme()
+        updateTheme()
     }
 
     private fun stopStartTimer() {
@@ -220,8 +225,6 @@ class TimerActivity : AppCompatActivity() {
 
                     timerService.isRunning = false
                     this@TimerActivity.foregroundStartService("Exit")
-//                    timerService.stopForeground(Service.STOP_FOREGROUND_REMOVE)
-
 
                     val setIntent = Intent (this@TimerActivity, MainActivity::class.java)
 
@@ -233,7 +236,6 @@ class TimerActivity : AppCompatActivity() {
 
                     binding.intervalsRecyclerView.adapter?.notifyItemChanged(curPos)
                     binding.intervalsRecyclerView.adapter?.notifyItemChanged(curPos - 1)
-
                     binding.intervalTimeLeftTextView.text = getTimeStringFromDouble(time)
                     binding.intervalsCountTextView.text = String.format("%02d/%02d", curPos + 1, mxPos)
                     binding.overallLeftTimeTextView.text = tLeft
@@ -279,7 +281,6 @@ class TimerActivity : AppCompatActivity() {
         finish()
     }
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     fun updateTheme() {
         val sharedPref = PreferenceManager.getDefaultSharedPreferences(this)
         val theme : Boolean = sharedPref.getBoolean("theme_switch_preference", false)
@@ -288,31 +289,23 @@ class TimerActivity : AppCompatActivity() {
         val font : String? = sharedPref.getString("font_preference", "-1")
 
 
-        if (font == "1")
-            binding.currentIntervalNameTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, binding.currentIntervalNameTextView.textSize * (0.5).toFloat())
-
+        if (font == "1") {
+            binding.currentIntervalNameTextView.setTextSize(
+                TypedValue.COMPLEX_UNIT_PX,
+                binding.currentIntervalNameTextView.textSize * (0.5).toFloat()
+            )
+        }
         if (font == "3")
             binding.currentIntervalNameTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, binding.currentIntervalNameTextView.textSize * (1.5).toFloat())
 
-        binding.prevIntervalButton.setBackgroundColor(Color.parseColor("#5e5e5e"))
 
         if(theme) {
 
-            bcg.setBackgroundColor(Color.parseColor("#5e5e5e"))
-            val col : ColorDrawable = ColorDrawable(Color.parseColor("#000000"))
-            getSupportActionBar()?.setBackgroundDrawable(col)
-            binding.prevIntervalButton.setBackgroundColor(Color.parseColor("#5e5e5e"))
-            binding.nextIntervalButton.setBackgroundColor(Color.parseColor("#5e5e5e"))
-            binding.stopStartTimeButton.setBackgroundColor(Color.parseColor("#5e5e5e"))
+            bcg.setBackgroundColor(baseContext.resources.getColor(R.color.darktheme))
 
-        } else {
-            bcg.setBackgroundColor(Color.parseColor("#FF6200EE"))
-            val col : ColorDrawable = ColorDrawable(Color.parseColor("#FF6200EE"))
-            getSupportActionBar()?.setBackgroundDrawable(col)
-
-            binding.prevIntervalButton.setBackgroundColor(Color.parseColor("#FF6200EE"))
-            binding.nextIntervalButton.setBackgroundColor(Color.parseColor("#FF6200EE"))
-            binding.stopStartTimeButton.setBackgroundColor(Color.parseColor("#FF6200EE"))
+        } else
+        {
+            bcg.setBackgroundColor(baseContext.resources.getColor(R.color.white))
 
         }
     }

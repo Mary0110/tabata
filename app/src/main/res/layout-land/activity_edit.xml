@@ -16,7 +16,44 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp">
+        android:layout_marginBottom="16dp"
+        android:id="@+id/edit_constraint"
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout2"
+            android:layout_width="243dp"
+            android:layout_height="64dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="1dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
+
+            <TextView
+                android:id="@+id/soundTitle"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="16dp"
+                android:text="@string/sound_title"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/switch1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switch1"
+                android:layout_width="87dp"
+                android:layout_height="55dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="32dp"
+                android:onCheckedChanged="@{(switch, checked) -> viewModel.onCheckedChanged(checked)}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/soundTitle"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout1"
@@ -30,13 +67,13 @@
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout7">
 
             <TextView
-                android:id="@+id/textView20"
+                android:id="@+id/color_title"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                android:text="Color"
-                android:textSize="14sp"
+                android:text="@string/color_title"
+                android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/constraintColors"
                 app:layout_constraintStart_toStartOf="parent"
@@ -51,7 +88,7 @@
                 android:layout_marginEnd="1dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/textView20"
+                app:layout_constraintStart_toEndOf="@+id/color_title"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <RadioGroup
@@ -110,8 +147,7 @@
             android:id="@+id/constraintLayout3"
             android:layout_width="241dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:layout_constraintBottom_toTopOf="@+id/constraintLayout7"
+            app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/phase_recyclerView"
             app:layout_constraintTop_toTopOf="parent">
@@ -120,12 +156,12 @@
                 android:id="@+id/seqTitle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:ems="10"
                 android:inputType="textPersonName"
                 android:onTextChanged="@{viewModel.onTextChanged}"
                 android:text="@{viewModel.title}"
+
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -137,12 +173,11 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout7"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_height="60dp"
             app:layout_constraintBottom_toTopOf="@+id/constraintLayout1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/phase_recyclerView"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
 
             <Button
                 android:id="@+id/button71"
@@ -162,13 +197,13 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/textView71"
+                android:id="@+id/sets_title"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="8dp"
                 android:text="Sets"
-                android:textSize="14sp"
+                android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/button72"
                 app:layout_constraintStart_toStartOf="parent"
@@ -187,7 +222,7 @@
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/s_num"
-                app:layout_constraintStart_toEndOf="@+id/textView71"
+                app:layout_constraintStart_toEndOf="@+id/sets_title"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
@@ -215,6 +250,7 @@
             android:layout_marginTop="1dp"
             android:layout_marginBottom="1dp"
             app:itemViewModels="@{viewModel.data}"
+            app:EditViewModel="@{viewModel}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
 
             app:layout_constraintBottom_toBottomOf="parent"

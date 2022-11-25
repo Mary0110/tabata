@@ -1,10 +1,14 @@
 package com.example.tabata.viewModel
 
 import android.app.Application
+import android.content.SharedPreferences
 import android.util.Log
 import android.widget.RadioGroup
-import androidx.lifecycle.*
-import androidx.room.withTransaction
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import androidx.preference.PreferenceManager
 import com.example.tabata.Db.MyDb
 import com.example.tabata.Db.Repo
 import com.example.tabata.Models.PhaseModel
@@ -14,24 +18,36 @@ import com.example.tabata.R
 import kotlinx.coroutines.launch
 
 
-class EditViewModel(application: Application, val mParam: Long):
+class EditViewModel( application: Application, val mParam: Long):
     AndroidViewModel(application) {
-        val zero:Long = 0
+
+    val zero:Long = 0
     var phasesList = MutableLiveData<List<PhaseViewModel>>(emptyList())
     val db:MyDb
     private var _title = MutableLiveData<String>()
     var sets = MutableLiveData<Int>()
+    var sound = MutableLiveData<Boolean>()
+
     var color = MutableLiveData<Int>()
+        var theme: Boolean = false
     lateinit var curr: SequenceWithPhases
-    lateinit var repo : Repo
+    var repo : Repo
     val data: LiveData<List<PhaseViewModel>>
         get() = phasesList
     val title: LiveData<String>
         get() = _title
-   // var data: LiveData<List<SequenceWithPhases>>
-    init{
+
+     var pref : SharedPreferences
+     var font: String
+
+    init {
+       pref = PreferenceManager.getDefaultSharedPreferences(application)
+       font  = pref.getString("font_preference", "-1").toString()
+       theme = pref.getBoolean("theme_switch_preference", false)
+
         db = MyDb.getDb(application)
        repo = Repo(db)
+
        if(mParam!= zero) {
            loadData(application, mParam)
        }
@@ -41,9 +57,11 @@ class EditViewModel(application: Application, val mParam: Long):
             sets.value = 1
             color.value = R.id.radioButton5
        }
+
        Log.d("myinitialized", "init")
 
     }
+
 
     fun getLastAddedId(): Long{
         var id: Long = -1
@@ -53,19 +71,22 @@ class EditViewModel(application: Application, val mParam: Long):
         return id
     }
 
+    fun getThemeColor(): Int{
+        return if (theme)
+            getApplication<Application?>().applicationContext.resources.getColor(R.color.darktheme)
+        else
+            getApplication<Application?>().applicationContext.resources.getColor(R.color.white)
+    }
+
     private fun loadData(application: Application, mParam:Long) {
 
         viewModelScope.launch {
             curr = repo.getAll().find { it.sequence.SequenceId == mParam }!!
             _title.value = curr.sequence.title
-            Log.d("my", "${curr.phases}")
             sets.value = curr.sequence.sets_number
             color.value = curr.sequence.color
             phasesList.value = (createViewData(curr.phases))
-            Log.d("my2", "${title}")
-            Log.d("my4", "${_title.value}")
-
-
+            sound.value = curr.sequence.SoundEffect
         }
     }
     private fun createViewData(phaseList: List<PhaseModel>): List<PhaseViewModel> {
@@ -88,18 +109,6 @@ class EditViewModel(application: Application, val mParam: Long):
         color.value = id
     }
 
-    /*fun setTitle(_title: String){
-        title.postValue( _title)
-    }*/
-
-    fun setSets(_title: Int){
-        sets.postValue(_title)
-    }
-
-    fun setColor(_title: Int){
-        color.postValue( _title)
-    }
-
     fun OnMinusSets(){
         if(sets.value!! > 1)
             sets.value = sets.value!! -1
@@ -114,16 +123,6 @@ class EditViewModel(application: Application, val mParam: Long):
         Log.w("tag", "onTextChanged $s")
     }
 
-    /*fun createPhaseModelList(): List<PhaseModel>
-    {
-        var list : List<PhaseModel> = emptyList()
-        //phasesList.value?.forEach{
-            //PhaseModel(null,
-          //  )
-        //}
-
-    }*/
-
     fun saveSequence(){
 
         var titleToPass= "default title"
@@ -136,11 +135,11 @@ class EditViewModel(application: Application, val mParam: Long):
             {
                 if(mParam== zero)
                 {
-                    var seq = SequenceModel(null, titleToPass, color.value!!, sets.value!!, true)
+                    var seq = SequenceModel(null, titleToPass, color.value!!, sets.value!!, sound.value!!)
                     viewModelScope.launch { repo.insertSequence(seq) }
                 }
                 else{
-                    var seq = SequenceModel(mParam, titleToPass, color.value!!, sets.value!!, true)
+                    var seq = SequenceModel(mParam, titleToPass, color.value!!, sets.value!!,  sound.value!!)
                     viewModelScope.launch { repo.updateSequence(seq) }
                 }
             }
@@ -155,7 +154,7 @@ class EditViewModel(application: Application, val mParam: Long):
                             order=ind + 1)
                         list.add(phase)
                     }
-                    var seq = SequenceModel(null, titleToPass, color.value!!, sets.value!!, true)
+                    var seq = SequenceModel(null, titleToPass, color.value!!, sets.value!!,  sound.value!!)
                     viewModelScope.launch { repo.addBoth(seq, list.toList()) }
 
                 }
@@ -169,7 +168,7 @@ class EditViewModel(application: Application, val mParam: Long):
                             order=ind + 1)
                         list.add(phase)
                     }
-                    var seq = SequenceModel(mParam, titleToPass, color.value!!, sets.value!!, true)
+                    var seq = SequenceModel(mParam, titleToPass, color.value!!, sets.value!!,  sound.value!!)
                     viewModelScope.launch {
                         repo.addBoth(seq, list.toList())
                     }
@@ -193,4 +192,8 @@ class EditViewModel(application: Application, val mParam: Long):
             }
         }
     }
-}
+
+    fun onCheckedChanged(checked: Boolean) {
+        sound.value = checked
+    }
+    }

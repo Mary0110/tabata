@@ -16,12 +16,12 @@
     <string name="font_settings">Font size</string>
     <string-array name="interval_types">
         <item> </item>
-        <item>Preparation</item>
+        <item>warm-up</item>
         <item>Work</item>
-        <item>Rest</item>
-        <item>Rest between sets</item>
-        <item>Calm down</item>
-        <item>Delete</item>
+        <item>break</item>
+        <item>Long break</item>
+        <!--item>Calm down</item>
+        <item>Delete</item-->
     </string-array>
 
     <string-array name="add_interval_up_down">
@@ -44,6 +44,16 @@
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="default_description">Description</string>
-    <string name="data_cleaned_msg">Cleaned all data from database</string>
+    <string name="data_cleaned_msg">Deleted all data</string>
     <string name="default_workout_name">Select name</string>
+
+    <string name="work_submenu_title">work</string>
+    <string name="break_submenu_item">break</string>
+    <string name="long_break_menu_itemsub">long break</string>
+    <string name="warm_up_submenu_item">warm-up</string>
+
+
+    <string name="sets_title">sets</string>
+    <string name="color_title">color</string>
+    <string name="sound_title">sound</string>
 </resources>

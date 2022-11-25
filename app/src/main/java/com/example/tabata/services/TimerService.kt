@@ -185,10 +185,12 @@ class TimerService : Service() {
                     phases = dao?.getPhases(id)
                     Log.d("mycoroutine", "$phases")
                     curPos = 0
-                    val time = phases!![curPos].duration.toDouble()
-                    Gtime = time
-                    timer.scheduleAtFixedRate(TimeTask(Gtime), 0, 1000)
-                    isRunning = true
+                    if(phases!!.isNotEmpty()){
+                        val time = phases!![curPos].duration.toDouble()
+                        Gtime = time
+                        timer.scheduleAtFixedRate(TimeTask(Gtime), 0, 1000)
+                        isRunning = true
+                    }
                 }
 
 
