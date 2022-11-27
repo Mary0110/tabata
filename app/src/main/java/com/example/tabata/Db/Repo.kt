@@ -68,16 +68,25 @@ suspend fun getAll(): List<SequenceWithPhases>{
 
        }
     }
-       suspend fun insertSequence(seq: SequenceModel){
-           withContext(Dispatchers.IO) {
-               database.getDao().insertSequence(seq)
-           }}
-suspend fun addBoth(s:SequenceModel, l:List<PhaseModel>){
-    withContext(Dispatchers.IO){
-        database.getDao().addBoth(s,l)
+
+    suspend fun insertSequence(seq: SequenceModel){
+       withContext(Dispatchers.IO) {
+           database.getDao().insertSequence(seq)
+       }
     }
 
-}
+    suspend fun addBoth(s:SequenceModel, l:List<PhaseModel>){
+        withContext(Dispatchers.IO){
+            database.getDao().addBoth(s,l)
+        }
+    }
+    suspend fun getSequence(seq: Long): SequenceModel{
+        var s : SequenceModel
+        withContext(Dispatchers.IO) {
+            s = database.getDao().getSequence(seq)
+        }
+        return s
+    }
 
    suspend fun removePhaseById(id: Long) {
        withContext(Dispatchers.IO) {

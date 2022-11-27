@@ -41,6 +41,7 @@ class TimerActivity : AppCompatActivity() {
     var curPos : Int = 0
     var dao : Dao? = null
     var phases : MutableList<PhaseModel> = ArrayList()
+    var sound: Boolean? = null
 
     companion object {
         const val CHANNEL_ID : String = "123123"
@@ -74,6 +75,7 @@ class TimerActivity : AppCompatActivity() {
 
             lifecycleScope.launch{
                 phases = repo.getPhases(workId).toMutableList()
+                sound = repo.getSequence(workId).SoundEffect
                 binding.intervalsRecyclerView.layoutManager = LinearLayoutManager(this@TimerActivity)
                 adapter = TimerAdapter(this@TimerActivity, workId)
                 if(phases!!.isNotEmpty())

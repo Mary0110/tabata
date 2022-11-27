@@ -51,7 +51,7 @@ class TimerService : Service() {
 
     val timer : Timer = Timer()
     var id : Long = -1
-
+    var sound: Boolean? = null
     var dao : Dao? = null
     var phases : MutableList<PhaseModel>? = null
     var curPos : Int = -1
@@ -61,7 +61,6 @@ class TimerService : Service() {
     private lateinit var tmpIntent : Intent
 
     @RequiresApi(Build.VERSION_CODES.M)
-  //  @SuppressLint("UnspecifiedImmutableFlag")
     fun clickPendingIntent(): PendingIntent? {
         val clickIntent = Intent(
             this,
@@ -131,6 +130,7 @@ class TimerService : Service() {
                 CoroutineScope(Dispatchers.IO).launch {
                     dao = MyDb.getDb(application).getDao()
                     phases = dao?.getPhases(id)
+                    sound = dao?.getSequence(id)?.SoundEffect
                     Log.d("mycoroutine", "$phases")
                     curPos = 0
                     if(phases!!.isNotEmpty()){
@@ -173,11 +173,13 @@ class TimerService : Service() {
 
                 if (curPos < phases?.size!!) {
                     val sndTimer = Timer()
-                    sndTimer.scheduleAtFixedRate(SoundTask(1, RingtoneManager.getRingtone(applicationContext, RingtoneManager.getDefaultUri(
+                    if(sound == true)
+                        sndTimer.scheduleAtFixedRate(SoundTask(1, RingtoneManager.getRingtone(applicationContext, RingtoneManager.getDefaultUri(
                         RingtoneManager.TYPE_RINGTONE))), 0, 1000)
                 }
                 else {
                     val sndTimer = Timer()
+                    if(sound == true)
                     sndTimer.scheduleAtFixedRate(SoundTask(1, RingtoneManager.getRingtone(applicationContext, RingtoneManager.getDefaultUri(
                         RingtoneManager.TYPE_ALARM))), 0, 2000)
                 }
