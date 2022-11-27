@@ -61,7 +61,7 @@ class TimerService : Service() {
     private lateinit var tmpIntent : Intent
 
     @RequiresApi(Build.VERSION_CODES.M)
-    @SuppressLint("UnspecifiedImmutableFlag")
+  //  @SuppressLint("UnspecifiedImmutableFlag")
     fun clickPendingIntent(): PendingIntent? {
         val clickIntent = Intent(
             this,
@@ -74,58 +74,6 @@ class TimerService : Service() {
             addNextIntentWithParentStack(clickIntent)
             getPendingIntent(CODE_CLICK_INTENT, PendingIntent.FLAG_IMMUTABLE)
         }
-    }
-
-    @SuppressLint("UnspecifiedImmutableFlag")
-    private fun backPendingIntent(): PendingIntent {
-        val backIntent = Intent(this, TimerService::class.java).apply {
-            putExtra(INTENT_COMMAND, INTENT_COMMAND_BACK)
-        }
-        return PendingIntent.getService(
-            this,
-            CODE_BACK_INTENT,
-            backIntent,
-            0
-        )
-    }
-
-    @SuppressLint("UnspecifiedImmutableFlag")
-    private fun forwardPendingIntent(): PendingIntent {
-        val forwardIntent = Intent(this, TimerService::class.java).apply {
-            putExtra(INTENT_COMMAND, INTENT_COMMAND_FORWARD)
-        }
-        return PendingIntent.getService(
-            this,
-            CODE_FORWARD_INTENT,
-            forwardIntent,
-            0
-        )
-    }
-
-    @SuppressLint("UnspecifiedImmutableFlag")
-    private fun pausePendingIntent(): PendingIntent {
-        val pauseIntent = Intent(this, TimerService::class.java).apply {
-            putExtra(INTENT_COMMAND, INTENT_COMMAND_PAUSE)
-        }
-        return PendingIntent.getService(
-            this,
-            CODE_PAUSE_INTENT,
-            pauseIntent,
-            0
-        )
-    }
-
-    @SuppressLint("UnspecifiedImmutableFlag")
-    private fun resumePendingIntent(): PendingIntent {
-        val resumeIntent = Intent(this, TimerService::class.java).apply {
-            putExtra(INTENT_COMMAND, INTENT_COMMAND_RESUME)
-        }
-        return PendingIntent.getService(
-            this,
-            CODE_RESUME_INTENT,
-            resumeIntent,
-            0
-        )
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

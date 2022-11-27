@@ -45,7 +45,7 @@ class EditViewModel( application: Application, val mParam: Long):
        font  = pref.getString("font_preference", "-1").toString()
        theme = pref.getBoolean("theme_switch_preference", false)
 
-        db = MyDb.getDb(application)
+       db = MyDb.getDb(application)
        repo = Repo(db)
 
        if(mParam!= zero) {
@@ -56,6 +56,7 @@ class EditViewModel( application: Application, val mParam: Long):
            _title.value = ""
             sets.value = 1
             color.value = R.id.radioButton5
+           sound.value = false
        }
 
        Log.d("myinitialized", "init")
@@ -131,7 +132,7 @@ class EditViewModel( application: Application, val mParam: Long):
 
 
         viewModelScope.launch {
-            if(phasesList.value == null)
+            if(phasesList.value == null || phasesList.value!!.isEmpty() )
             {
                 if(mParam== zero)
                 {

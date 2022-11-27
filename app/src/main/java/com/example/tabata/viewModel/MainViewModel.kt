@@ -9,12 +9,13 @@ import androidx.preference.PreferenceManager
 import com.example.tabata.Db.MyDb
 import com.example.tabata.Db.Repo
 import com.example.tabata.Models.SequenceModel
+import com.example.tabata.Models.SequenceWithPhases
 import kotlinx.coroutines.launch
 
 class MainViewModel(application: Application) : AndroidViewModel(application){
 
     lateinit var repo: Repo
-    lateinit var data: LiveData<List<SequenceModel>>
+    lateinit var data: LiveData<List<SequenceWithPhases>>
     //
     init{
         val db = MyDb.getDb(application)
@@ -22,24 +23,21 @@ class MainViewModel(application: Application) : AndroidViewModel(application){
         updateData()
     }
 
+
     fun deleteSequence(pressedSequenceId: Long) {
         val r = data.value?.find{
-            it.SequenceId == pressedSequenceId
+            it.sequence.SequenceId == pressedSequenceId
         }
         viewModelScope.launch {
             if (r != null) {
-                repo.removeSequence(r)
+                repo.removeSequence(r.sequence)
             }
         }
     }
 
     fun updateData(){
-        data = repo.getSequences()
+        data = repo.getSequencesWithPhasesLive()
 
     }
 
-    fun getdata(): List<SequenceModel>?
-    {
-            return data.value
-    }
 }

@@ -55,19 +55,7 @@ suspend fun getAll(): List<SequenceWithPhases>{
         }
     }
 
-   // val phases_of_seq : Flow<List<PhaseModel>> = database.getDao().getPhases(seqId)
-   /* fun getById(id:Int):SequenceWithPhases?
-   {
-       var swph:SequenceWithPhases = data.value
-       for(s in data)
-       {
-           if(s.sequence.sequenceId == id)
-           {
-             swph = s
-           }
-       }
-       return swph
-    }*/
+
     suspend fun updateSequence(seq: SequenceModel) {
        withContext(Dispatchers.IO) {
            database.getDao().updateSequence(seq)
@@ -105,6 +93,10 @@ suspend fun addBoth(s:SequenceModel, l:List<PhaseModel>){
         }
         return  id
     }
+
+    fun getSequencesWithPhasesLive(): LiveData<List<SequenceWithPhases>> = database.getDao().getAllSequencesWithPhasesLive()
+
+
 
     /*suspend fun refreshVideos() {
        withContext(Dispatchers.IO) {

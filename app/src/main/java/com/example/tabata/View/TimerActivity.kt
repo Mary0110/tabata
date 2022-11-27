@@ -201,6 +201,9 @@ class TimerActivity : AppCompatActivity() {
 
     private val updateTime: BroadcastReceiver = object : BroadcastReceiver() {
 
+        private lateinit var statusReceiver: BroadcastReceiver
+        private lateinit var timeReceiver: BroadcastReceiver
+
         @RequiresApi(Build.VERSION_CODES.O)
         override fun onReceive(context: Context?, intent: Intent?) {
 

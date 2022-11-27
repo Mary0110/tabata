@@ -1,5 +1,6 @@
 package com.example.tabata.View.adapters
 
+import android.util.Log
 import android.util.TypedValue
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
@@ -23,11 +24,11 @@ fun bindEditViewModels(recyclerView: RecyclerView, editViewModel: EditViewModel)
 @BindingAdapter("android:textSize")
 fun bindTextSize(textView: TextView, size: String) {
     if(size == "1")
-        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, (textView.textSize *0.5).toFloat())
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, (12).toFloat())
     else if(size == "2")
-        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, (textView.textSize).toFloat())
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, (20).toFloat())
     else if(size == "3")
-        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP,(textView.textSize *1.2).toFloat())
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP,(30).toFloat())
 }
 
 private fun getOrCreateAdapter(recyclerView: RecyclerView): BindableRecyclerViewAdapter {

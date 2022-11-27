@@ -76,4 +76,8 @@ interface Dao {
 
     @Query("DELETE FROM sequences")
     fun deleteAllIntervals()
+
+    @Transaction
+    @Query("SELECT * FROM sequences")
+    fun getAllSequencesWithPhasesLive(): LiveData<List<SequenceWithPhases>>
 }

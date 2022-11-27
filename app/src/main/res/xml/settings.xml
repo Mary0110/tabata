@@ -20,7 +20,7 @@
         android:entryValues="@array/font_sizes_entries_array"
         android:key="font_preference"
         android:title="@string/font_settings"
-        android:summary="%s"/>
+      />
 
     <Preference
         android:key="delete_preference"

@@ -12,15 +12,14 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tabata.Models.SequenceModel
+import com.example.tabata.Models.SequenceWithPhases
 import com.example.tabata.R
 import com.example.tabata.viewModel.EditViewModel
 
 
 class SequenceRecyclerAdapter(val listener: ClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>()
 {
-    //private val TAG: String = "AppDebug"
-
-    private var items: MutableList<SequenceModel> = ArrayList()
+    private var items: MutableList<SequenceWithPhases> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return SequenceViewHolder(
@@ -34,9 +33,6 @@ class SequenceRecyclerAdapter(val listener: ClickListener) : RecyclerView.Adapte
         when(holder) {
             is SequenceViewHolder -> {
                 holder.bind(items.get(position), listener)
-
-
-                //holder.card.setBackgroundColor(Color.parseColor("#FFBB86FC"))
             }
         }
 
@@ -47,7 +43,7 @@ class SequenceRecyclerAdapter(val listener: ClickListener) : RecyclerView.Adapte
         return items.size
     }
 
-    fun submitList(seqList: MutableList<SequenceModel>){
+    fun submitList(seqList: MutableList<SequenceWithPhases>){
         items.run {
             clear()
             addAll(seqList)
@@ -68,8 +64,10 @@ class SequenceRecyclerAdapter(val listener: ClickListener) : RecyclerView.Adapte
         val font : String? = sharedPref.getString("font_preference", "-1")
 
 
-        fun bind(sequenceModel: SequenceModel, listener: ClickListener){
-            title.text = sequenceModel.title
+        fun bind(sequenceModel: SequenceWithPhases, listener: ClickListener){
+            title.text = sequenceModel.sequence.title
+            Log.d("myfontR", "$font")
+
             if (font == "1") {
                 title.setTextSize(TypedValue.COMPLEX_UNIT_PX,  (80).toFloat())
             }
@@ -80,11 +78,11 @@ class SequenceRecyclerAdapter(val listener: ClickListener) : RecyclerView.Adapte
 
             var backgroundColor = itemView.context.resources.getColor(R.color.mygreen)
 
-            if(sequenceModel.color == R.id.radioButton3)
+            if(sequenceModel.sequence.color == R.id.radioButton3)
                  backgroundColor = itemView.context.resources.getColor(R.color.myred)
-            else if(sequenceModel.color ==  R.id.radioButton4)
+            else if(sequenceModel.sequence.color ==  R.id.radioButton4)
                 backgroundColor = itemView.context.resources.getColor(R.color.myyellow)
-            else if(sequenceModel.color ==  R.id.radioButton5)
+            else if(sequenceModel.sequence.color ==  R.id.radioButton5)
                 backgroundColor = itemView.context.resources.getColor(R.color.mygreen)
             card.setBackgroundColor((backgroundColor))
             Log.d("ifstat", "${backgroundColor}")
@@ -93,13 +91,13 @@ class SequenceRecyclerAdapter(val listener: ClickListener) : RecyclerView.Adapte
                 listener.onClick(sequenceModel)
             }
             itemView.setOnLongClickListener {
-                listener.onLongClick(sequenceModel)
+                listener.onLongClick(sequenceModel.sequence)
                 return@setOnLongClickListener true
             }
         }
     }
     interface ClickListener{
-        fun onClick(sequence: SequenceModel)
+        fun onClick(sequence: SequenceWithPhases)
         fun onLongClick(sequence: SequenceModel)
     }
 }

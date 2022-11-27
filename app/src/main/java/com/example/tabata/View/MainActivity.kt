@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tabata.*
 import com.example.tabata.Models.SequenceModel
+import com.example.tabata.Models.SequenceWithPhases
 import com.example.tabata.View.adapters.SequenceRecyclerAdapter
 import com.example.tabata.viewModel.MainViewModel
 import java.util.*
@@ -88,16 +89,19 @@ class MainActivity : AppCompatActivity(), SequenceRecyclerAdapter.ClickListener 
         val id = item.itemId
 
         if (id == R.id.mybutton) {
-                val intentToEditActivity = Intent(this, EditActivity::class.java)
-
+            val intentToEditActivity = Intent(this, EditActivity::class.java)
             startActivity(intentToEditActivity)
                 Toast.makeText(this@MainActivity, "Yoo clicked plus", Toast.LENGTH_LONG).show()
+            finish()
+
+
         }
 
         if (id == R.id.pencil) {
             val intentToEditActivity = Intent(this, EditActivity::class.java)
             intentToEditActivity.putExtra("sequence_id", pressedSequenceId)
             startActivity(intentToEditActivity)
+            finish()
             Toast.makeText(this@MainActivity, "Yoo clicked pencil", Toast.LENGTH_LONG).show()
         }
         if (id == R.id.delete) {
@@ -112,6 +116,8 @@ class MainActivity : AppCompatActivity(), SequenceRecyclerAdapter.ClickListener 
         if(id == R.id.settings){
             val intentToSettingsActivity = Intent(this, SettingsActivity::class.java)
             startActivity(intentToSettingsActivity)
+            finish()
+
         }
         return super.onOptionsItemSelected(item)
     }
@@ -129,11 +135,17 @@ class MainActivity : AppCompatActivity(), SequenceRecyclerAdapter.ClickListener 
     }
 
 
-    override fun onClick(sequence: SequenceModel) {
+    override fun onClick(sequence: SequenceWithPhases) {
         Toast.makeText(this@MainActivity, "Yoo clicked sequence", Toast.LENGTH_LONG).show()
-        val intentToTimerActivity = Intent(this, TimerActivity::class.java)
-        intentToTimerActivity.putExtra("id", sequence.SequenceId)
-        startActivity(intentToTimerActivity)
+        if(sequence.phases.isNotEmpty()) {
+            val intentToTimerActivity = Intent(this, TimerActivity::class.java)
+            intentToTimerActivity.putExtra("id", sequence.sequence.SequenceId)
+            startActivity(intentToTimerActivity)
+            finish()
+        }
+        else{
+            Toast.makeText(this@MainActivity, "Sequence is empty", Toast.LENGTH_LONG).show()
+        }
     }
 
     override fun onLongClick(sequence: SequenceModel) {

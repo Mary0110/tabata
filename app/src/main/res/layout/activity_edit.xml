@@ -27,13 +27,14 @@
             android:textAlignment="center"
             app:layout_constraintBottom_toTopOf="@+id/phase_recyclerView"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout1"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="0dp"
             android:layout_marginTop="3dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -124,7 +125,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout7"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="0dp"
             android:layout_marginBottom="3dp"
             app:layout_constraintBottom_toTopOf="@+id/constraintLayout1"
             app:layout_constraintEnd_toEndOf="parent"
@@ -199,8 +200,8 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/phase_recyclerView"
-            android:layout_width="404dp"
-            android:layout_height="353dp"
+            android:layout_width="0dp"
+            android:layout_height="500dp"
             android:layout_marginStart="1dp"
             app:EditViewModel="@{viewModel}"
             app:itemViewModels="@{viewModel.data}"
@@ -214,7 +215,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout2"
             android:layout_width="409dp"
-            android:layout_height="70dp"
+            android:layout_height="0dp"
             android:layout_marginStart="1dp"
             android:layout_marginEnd="1dp"
             app:layout_constraintBottom_toTopOf="@+id/constraintLayout7"

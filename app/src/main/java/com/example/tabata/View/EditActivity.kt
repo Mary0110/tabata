@@ -66,11 +66,14 @@ class EditActivity : AppCompatActivity() {
         if (id == R.id.save_button) {
             viewModel.saveSequence()
             Log.d("mycff", "")
-            val intentToTimerScreen = Intent(this, TimerActivity::class.java)
+            if(viewModel.phasesList.value!!.isNotEmpty()){
+            val intentToTimerScreen = Intent(this, MainActivity::class.java)
             intentToTimerScreen.putExtra("id", currentSequenceId)
             startActivity(intentToTimerScreen)
+                finish()}
+
             Toast.makeText(this@EditActivity, "Yoo clicked save", Toast.LENGTH_LONG).show()
-            finish()
+
 
         }
 
@@ -119,13 +122,14 @@ class EditActivity : AppCompatActivity() {
 
         val font: String? = sharedPref.getString("font_preference", "-1")
         viewModel.font = font!!
-
+        Log.d("myfont", "$font")
 
         if (font == "1") {
-            workName.setTextSize(TypedValue.COMPLEX_UNIT_PX,  (80).toFloat())
-            sets_title.setTextSize(TypedValue.COMPLEX_UNIT_PX, (80).toFloat())
-            color_title.setTextSize(TypedValue.COMPLEX_UNIT_PX, (80).toFloat())
-            sound_title.setTextSize(TypedValue.COMPLEX_UNIT_PX, (80).toFloat())
+
+            workName.setTextSize(TypedValue.COMPLEX_UNIT_PX,  (40).toFloat())
+            sets_title.setTextSize(TypedValue.COMPLEX_UNIT_PX, (40).toFloat())
+            color_title.setTextSize(TypedValue.COMPLEX_UNIT_PX, (40).toFloat())
+            sound_title.setTextSize(TypedValue.COMPLEX_UNIT_PX, (40).toFloat())
 
         }
         else if (font == "3") {
@@ -138,7 +142,6 @@ class EditActivity : AppCompatActivity() {
 
 
         if (theme) {
-
             bcg.setBackgroundColor(baseContext.resources.getColor(R.color.darktheme))
         }
         else {
